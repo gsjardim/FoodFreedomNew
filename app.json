@@ -16,14 +16,16 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "bundleIdentifier": "com.gsjardim83.foodFreedomApp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "package": "com.gsjardim83.foodFreedomApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -39,8 +41,7 @@
             "useFrameworks": "static"
           }
         }
-      ]      
-     
+      ]
     ]
   }
 }

@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "63507067124",
+    "firebase_url": "https://ac-21w-team-8-default-rtdb.firebaseio.com",
+    "project_id": "ac-21w-team-8",
+    "storage_bucket": "ac-21w-team-8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:63507067124:android:ecdfe3b0aeaa38700beea1",
+        "android_client_info": {
+          "package_name": "com.gsjardim83.foodfreedomRN"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "63507067124-ceqkfbal472o2b2g8u84utsidll81gbn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gsjardim83.foodfreedomRN",
+            "certificate_hash": "01ba45f32b5c740378f7ac4bf858b0c372520330"
+          }
+        },
+        {
+          "client_id": "63507067124-h77rtro9gvi57jqqpvhq5hpfbeoefpaj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gsjardim83.foodfreedomRN",
+            "certificate_hash": "ee6b8c3ed2c00edd0d2b9282ee4540f45d2630d2"
+          }
+        },
+        {
+          "client_id": "63507067124-eor8866k87b4oii8h8jgiat095pakn6f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZtEw3i_Eb56YO1mGmAjiYg2eJPC_Bq2g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "63507067124-90hr9un5b5p5v5b20vjnpr5mmohp6okj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
