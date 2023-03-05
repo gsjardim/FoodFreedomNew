@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:63507067124:android:ecdfe3b0aeaa38700beea1",
         "android_client_info": {
-          "package_name": "com.gsjardim83.foodfreedomRN"
+          "package_name": "com.gsjardim83.foodFreedomApp"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "63507067124-ceqkfbal472o2b2g8u84utsidll81gbn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.gsjardim83.foodfreedomRN",
+            "package_name": "com.gsjardim83.foodFreedomApp",
             "certificate_hash": "01ba45f32b5c740378f7ac4bf858b0c372520330"
           }
         },
@@ -26,7 +26,7 @@
           "client_id": "63507067124-h77rtro9gvi57jqqpvhq5hpfbeoefpaj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.gsjardim83.foodfreedomRN",
+            "package_name": "com.gsjardim83.foodFreedomApp",
             "certificate_hash": "ee6b8c3ed2c00edd0d2b9282ee4540f45d2630d2"
           }
         },

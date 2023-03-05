@@ -1,14 +1,14 @@
 {
   "expo": {
     "name": "foodFreedomApp",
-    "slug": "foodFreedomApp",
+    "slug": "foodfreedomRN",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "image": "./assets/images/splash_screen.png",
+      "resize_mode": "contain",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
@@ -17,7 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "googleServicesFile": "./GoogleService-Info.plist",
-      "bundleIdentifier": "com.gsjardim83.foodFreedomApp"
+      "bundleIdentifier": "com.gsjardim83.foodfreedomRN"
     },
     "android": {
       "adaptiveIcon": {
@@ -25,10 +25,18 @@
         "backgroundColor": "#ffffff"
       },
       "googleServicesFile": "./google-services.json",
-      "package": "com.gsjardim83.foodFreedomApp"
+      "package": "com.gsjardim83.foodfreedomRN",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f41b4e21-0775-4555-bd9f-642f061c3687"
+      }
     },
     "plugins": [
       "@react-native-firebase/app",
@@ -40,6 +48,25 @@
           "ios": {
             "useFrameworks": "static"
           }
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "@react-native-google-signin/google-signin"
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/logo_white.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./assets/sounds/messageringtone.mp3"
+          ]
         }
       ]
     ]

@@ -6,18 +6,13 @@ import FoodMoodScreen from '../screens/FoodMoodScreen';
 import WaterScreen from '../screens/WaterScreen';
 import ExerciseScreen from '../screens/ExerciseScreen';
 import SleepScreen from '../screens/SleepScreen';
-// import { RootStackParamList } from './params';
 import { HistoryScreen } from '../screens/HistoryScreen';
 import DrawerNavigator from './drawerNavigation';
 import { VideoScreen } from '../screens/VideoScreen';
 import { DiaryInputScreen } from '../screens/DiaryInputScreen';
 import { LoginScreen } from '../screens/LoginScreen';
 import { RegisterScreen } from '../screens/RegisterScreen';
-import store from '../redux.store/configureStore';
 import { WelcomeScreen } from '../screens/WelcomeScreen';
-import database from '@react-native-firebase/database'
-import storage from '@react-native-firebase/storage'
-import auth from '@react-native-firebase/auth'
 import { ProfileScreen } from '../screens/ProfileScreen';
 
 
@@ -26,7 +21,6 @@ const Stack = createStackNavigator();
 export const HomeStackNavigator = (props: any) => {
 
 
-    let isLoggedIn = auth().currentUser != null; //change this to firebase auth verification
     return (
         <Stack.Navigator
             screenOptions={{ headerShown: false }}

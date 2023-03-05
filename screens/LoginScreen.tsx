@@ -88,7 +88,7 @@ export const LoginScreen = ({ navigation }: any) => {
                     deleteStorageData(PUSH_TOKEN)
                     return;
                 }
-                const token = (await Notifications.getExpoPushTokenAsync({ experienceId: '@gsjardim83/foodfreedomRN' })).data;
+                const token = (await Notifications.getExpoPushTokenAsync({ experienceId: '@gsjardim83/foodFreedomApp' })).data;
 
                 storeString(PUSH_TOKEN, token);
             } else {

@@ -1,15 +1,13 @@
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { Image, Text, View } from 'react-native';
-import { createBottomTabNavigator, useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { HomeStackNavigator, HistoryStackNavigator } from './stackNavigation';
+import { Image} from 'react-native';
+import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { ResourcesScreen } from '../screens/ResourcesScreen';
-import { ProfileScreen } from '../screens/ProfileScreen';
 import PhoneDimensions from '../resources/layout';
 import { Colors } from '../resources/colors';
 import { FontFamilies } from '../resources/constants';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { dark_diary, diary, diaryGreen, profile, profileGreen, report, reportGreen, resGreen, resources } from '../resources/imageObj';
+import { dark_diary,  diaryGreen,report, reportGreen, resGreen, resources } from '../resources/imageObj';
 import { BottomTabLabels } from '../resources/strings';
 import { HomeScreen } from '../screens/HomeScreen';
 import { HistoryScreen } from '../screens/HistoryScreen';

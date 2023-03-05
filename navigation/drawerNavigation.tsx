@@ -1,27 +1,22 @@
 import React from 'react';
-import { Image, StyleSheet, View, Text, Platform, StatusBar } from 'react-native';
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem, } from '@react-navigation/drawer';
-import { FontFamilies, TERMS_URL, PRIVACY_URL, FontSizes, StatusBarHeight, Activities, GoogleWebClient } from '../resources/constants';
+import { Image, StyleSheet, View, Text, StatusBar } from 'react-native';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, } from '@react-navigation/drawer';
+import { FontFamilies, TERMS_URL, PRIVACY_URL, FontSizes, StatusBarHeight } from '../resources/constants';
 import PhoneDimensions from '../resources/layout';
 import { Colors } from '../resources/colors';
 import BottomTabNavigator from './bottomTabNavigation';
-import { notificationIcon, freeResIcon, aboutIcon, termsIcon, contactIcon, signoutIcon, FF_logo, FF_whiteLogo, logoBanner, diary, profile } from '../resources/imageObj';
+import { notificationIcon, freeResIcon, aboutIcon, termsIcon, contactIcon, signoutIcon, FF_whiteLogo, logoBanner, profile } from '../resources/imageObj';
 import { openUrlInBrowser } from '../resources/common';
 import { SettingsScreen } from '../screens/SettingsScreen';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FreeResourcesScreen } from '../screens/FreeResourcesScreen';
 import { AboutScreen } from '../screens/AboutScreen';
 import { ContactScreen } from '../screens/ContactScreen';
 import { Diary } from '../screens/DiaryScreen';
-import database from '@react-native-firebase/database'
-import storage from '@react-native-firebase/storage'
 import auth from '@react-native-firebase/auth'
 import store from '../redux.store/configureStore';
 import { logoutUser, setSocialAuthentication } from '../redux.store/actions/userActions/creators';
-import * as AuthSession from 'expo-auth-session';
-import { APPLE_TOKEN, deleteStorageData, FB_TOKEN, getStorageData, GOOGLE_EMAIL, GOOGLE_TOKEN, LOGIN_INFO, OAUTH_TOKEN, storeJSON, storeString } from '../dao/internalStorage';
-import { discovery } from 'expo-auth-session/providers/google';
-// import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { deleteStorageData, FB_TOKEN} from '../dao/internalStorage';
+
 
 
 const Drawer = createDrawerNavigator();
