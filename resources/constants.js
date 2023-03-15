@@ -4,6 +4,7 @@ import { Colors } from "./colors";
 
 export const GoogleWebClient = '63507067124-eor8866k87b4oii8h8jgiat095pakn6f.apps.googleusercontent.com';
 export const ExpoClientID = '63507067124-le5osiec1tpc34bab4uaafebd08d1mu0.apps.googleusercontent.com';
+export const IOSClientId = '63507067124-k44v7hto7ise0gb5j03o7co66dl0fmst.apps.googleusercontent.com';
 export const appleKey = 'VB94QUXJAU';
 
 //test border: borderColor: 'black', borderWidth: 1,

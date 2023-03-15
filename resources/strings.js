@@ -166,7 +166,8 @@ export const WelcomeScreenStrings = {
 
 export const AlertDialogStrings = {
     messageLabel: 'Message',
-    newVideosDialog: 'New videos available in Resources!'
+    newVideosDialog: 'New videos available in Resources!',
+    notificationsPermissions: 'Enable push notifications to use the app!',
 }
 
 export const NotificationsStrings = {

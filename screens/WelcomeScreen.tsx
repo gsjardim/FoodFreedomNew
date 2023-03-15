@@ -77,7 +77,7 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
         return unsubscribe;
     }, [])
 
-
+    if(!imageObj) return null;
     return (
         <SafeAreaView style={styles.container}>
             <ImageBackground source={imageObj} style={styles.background}>

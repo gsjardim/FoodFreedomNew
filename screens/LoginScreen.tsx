@@ -6,10 +6,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { CustomButton } from "../components/CustomButton";
 import { RoundCheckbox } from "../components/RoundCheckbox";
 import { Colors } from '../resources/colors';
-import { DefaultPadding, FontFamilies, FontSizes, GeneralTextStyle, GoogleWebClient, ToastDuration, DefaultShadow, ExpoClientID } from "../resources/constants";
+import { DefaultPadding, FontFamilies, FontSizes, GeneralTextStyle, GoogleWebClient, ToastDuration, DefaultShadow, ExpoClientID, IOSClientId } from "../resources/constants";
 import { FF_logo, googleLogo } from "../resources/imageObj";
 import PhoneDimensions from "../resources/layout";
-import { ButtonStrings, LoginRegisterScreenStrings, NotificationsStrings } from "../resources/strings";
+import { AlertDialogStrings, ButtonStrings, LoginRegisterScreenStrings, NotificationsStrings } from "../resources/strings";
 import { checkMarkSize } from "./FoodMoodScreen";
 import Ionicons from '@expo/vector-icons/Ionicons'
 import store from "../redux.store/configureStore";
@@ -31,7 +31,7 @@ import MyNotification from "../models/NotificationModel";
 import { getFormattedDate } from "../resources/common";
 import { saveNotification } from "../dao/notificationsDAO";
 import { setNewMessageStatus } from "../redux.store/actions/generalActions/creators";
-import { report } from "../App";
+import report from "../components/CrashReport";
 
 export const LOGO_SIZE = PhoneDimensions.window.width * 0.3;
 export const GOOGLE_LOGIN = 'google';
@@ -42,7 +42,7 @@ export const INSTA_LOGIN = 'instagram';
 
 export const LoginScreen = ({ navigation }: any) => {
 
-
+    
     const [rememberMe, setRememberMe] = useState<boolean>(false);
     const [passwordHidden, setPasswordHidden] = useState(true);
     const [password, setPassword] = useState('');
@@ -66,85 +66,12 @@ export const LoginScreen = ({ navigation }: any) => {
             })
     }, [])
 
-    const notificationListener = useRef<any>();
-    const responseListener = useRef<any>();
-
-
-    useEffect(() => {
-
-      
-        // Get user's permission for push notifications
-        const getPermission = async () => {
-            if (Device.isDevice) {
-                const { status: existingStatus } = await Notifications.getPermissionsAsync();
-                console.log('Login screen - Notifications.PermissionStatus = ' + existingStatus);
-                let finalStatus = existingStatus;
-                if (existingStatus !== 'granted') {
-                    const { status } = await Notifications.requestPermissionsAsync();
-                    finalStatus = status;
-                }
-                if (finalStatus !== 'granted') {
-                    alert('Enable push notifications to use the app!');
-                    deleteStorageData(PUSH_TOKEN)
-                    return;
-                }
-                const token = (await Notifications.getExpoPushTokenAsync({ experienceId: '@gsjardim83/foodFreedomApp' })).data;
-
-                storeString(PUSH_TOKEN, token);
-            } else {
-                alert('Must use physical device for Push Notifications');
-            }
-
-            if (Platform.OS === 'android') {
-                Notifications.setNotificationChannelAsync('default', {
-                    name: 'default',
-                    importance: Notifications.AndroidImportance.MAX,
-                    vibrationPattern: [0, 250, 250, 250],
-                    lightColor: '#FF231F7C',
-
-                });
-            }
-        }
-
-        getPermission()
-        .catch(error => report.recordError( error));
-
-
-        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            console.log('Notification received - ' + notification.request.content.title)
-            const newNotification = new MyNotification(
-                getFormattedDate(new Date(notification.date)),
-                notification.request.content.title || 'Title',
-                notification.request.content.body || 'Message'
-            )
-            if (newNotification.title !== NotificationsStrings.mealReminderTitle && newNotification.content !== NotificationsStrings.mealReminder)
-                saveNotification(newNotification).then(() => store.dispatch(setNewMessageStatus(true))).catch(err => console.log('Error saving notification ' + err));
-        });
-
-        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log(JSON.stringify(response))
-        });
-
-
-        // const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
-
-        // TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, ({ data, error, executionInfo }) => {
-        //   console.log('Received a notification in the background!');
-        //   // Do something with the notification data
-        // });
-
-        // Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
-
-        return () => {
-            Notifications.removeNotificationSubscription(notificationListener.current);
-            Notifications.removeNotificationSubscription(responseListener.current);
-        };
-
-    }, []);
+    
 
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
         androidClientId: GoogleWebClient,
         expoClientId: ExpoClientID,
+        iosClientId: IOSClientId,
         scopes: [
             'profile',
             'email',
@@ -166,10 +93,19 @@ export const LoginScreen = ({ navigation }: any) => {
         })
     }
 
+    const hasNotificationsPermissions = async () => {
+        return (await getStorageData(PUSH_TOKEN)) !== ''
+    }
+
 
     const onPressLogin = () => {
         if (email === '' || password === '') {
             alert('Please enter valid email and password')
+            return;
+        }
+
+        if(!hasNotificationsPermissions()){
+            alert(AlertDialogStrings.notificationsPermissions + '\nClose and start the app again.')
             return;
         }
 
@@ -196,51 +132,45 @@ export const LoginScreen = ({ navigation }: any) => {
 
         //Firebase Service ID:
         // host.exp.Exponent
+        if(!hasNotificationsPermissions()){
+            alert(AlertDialogStrings.notificationsPermissions + '\nClose and start the app again.')
+            return;
+        }
 
         const nonce = Math.random().toString(36).substring(2, 10);
 
         Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, nonce)
-            .then((hashedNonce) =>
+            .then((hashedNonce) =>{
 
-
-                AppleAuthentication.signInAsync({
+                setIsDataLoading(true);
+                return AppleAuthentication.signInAsync({
                     requestedScopes: [
                         AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
                         AppleAuthentication.AppleAuthenticationScope.EMAIL
                     ],
                     nonce: hashedNonce
                 })
-            )
+            })
             .then((appleCredential) => {
                 const { identityToken } = appleCredential;
 
-                // const provider = auth.AppleAuthProvider;
                 const liveCredential = auth.AppleAuthProvider.credential(identityToken!,nonce);
                 signInWithOAuthCredential(liveCredential, () => navigation.navigate('Welcome'), showToast)
             })
             .catch((error) => {
                 console.log('Error signing in with apple id: ' + JSON.stringify(error))
                 alert('Error signing in with apple id: ' + JSON.stringify(error));
-            });
+            })
+            .finally(() =>  setIsDataLoading(false));
 
     }
 
     async function onGoogleButtonPress() {
-        // Check if your device supports Google Play
-        // setIsDataLoading(true);
-        // const result: any = await promptAsync();
-        // console.log(result)
-
-        // if (result.type !== 'success') {
-        //     console.log('Failed google login. ' + JSON.stringify(result))
-        // }
-        // else {
-        //     const token = result.params.id_token;
-        //     // storeString(GOOGLE_TOKEN, token)
-        //     let credential = firebase.auth.GoogleAuthProvider.credential(token);
-        //     signInWithOAuthCredential(credential, () => navigation.navigate('Welcome'), null);
-
-        // }
+      
+        if(!hasNotificationsPermissions()){
+            alert(AlertDialogStrings.notificationsPermissions + '\nClose and start the app again.')
+            return;
+        }
          // Check if your device supports Google Play
          setIsDataLoading(true);
          await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
@@ -248,6 +178,7 @@ export const LoginScreen = ({ navigation }: any) => {
          GoogleSignin.signIn().
              then(res => {
                  // let email = res?.user.email
+                 console.log('Google signed in successfully')
                  let token = res.idToken
                  let credential = auth.GoogleAuthProvider.credential(token);
                  signInWithOAuthCredential(credential, () => navigation.navigate('Welcome'), showToast)
@@ -374,7 +305,7 @@ export const LoginScreen = ({ navigation }: any) => {
                             onChangeText={(value) => setPassword(value.trim())}
                             value={password}
                         />
-                        <Pressable onPress={() => setPasswordHidden(!passwordHidden)} style={{ padding: 6, position: "absolute", right: 15, top: -6 }}>
+                        <Pressable onPress={() => setPasswordHidden(!passwordHidden)} style={{ padding: 6, position: "absolute", right: 15, top: Platform.OS == "ios" ? -14 : -6 }}>
                             <Ionicons name={passwordHidden ? "eye" : "eye-off"} size={25} color={Colors.darkGray} />
                         </Pressable>
                     </View>
@@ -431,7 +362,7 @@ export const LoginScreen = ({ navigation }: any) => {
                             onPress={() => onGoogleButtonPress()}
                         >
                             <Image source={googleLogo} style={styles.socialMediaLogo} />
-                            <Text style={[GeneralTextStyle, { marginLeft: 10 }]}>Sign in with Google</Text>
+                            <Text style={[GeneralTextStyle, { marginLeft: 10 }]}>Google</Text>
                         </TouchableOpacity>
 
                     }
@@ -517,6 +448,7 @@ export const styles = StyleSheet.create({
         borderRadius: 6,
         marginVertical: PhoneDimensions.window.width * 0.02,
         backgroundColor: Colors.opaqueWhite,
+        minWidth: PhoneDimensions.window.width * 0.5,
     },
 
     appleSignInButton: {

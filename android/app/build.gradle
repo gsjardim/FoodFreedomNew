@@ -113,9 +113,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.foodfreedomapp"
+    namespace 'com.gsjardim83.foodfreedomRN'
     defaultConfig {
-        applicationId 'com.gsjardim83.foodFreedomApp'
+        applicationId 'com.gsjardim83.foodfreedomRN'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

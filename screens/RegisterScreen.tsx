@@ -1,6 +1,6 @@
 import { useState } from "react";
 import React from 'react'
-import { Image, View, Text, StyleSheet, Pressable, Alert } from "react-native";
+import { Image, View, Text, StyleSheet, Pressable, Alert, Platform } from "react-native";
 import { Directions, ScrollView, TextInput } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -211,7 +211,7 @@ export const RegisterScreen = ({ navigation }: any) => {
                             onChangeText={(value) => setPassword1(value.trim())}
                             value={password1}
                         />
-                        <Pressable onPress={() => setPasswordHidden(!passwordHidden)} style={{ padding: 6, position: "absolute", right: 15, top: -6 }}>
+                        <Pressable onPress={() => setPasswordHidden(!passwordHidden)} style={{ padding: 6, position: "absolute", right: 15, top: Platform.OS == "ios" ? -14 : -6 }}>
                             <Ionicons name={passwordHidden ? "eye" : "eye-off"} size={25} color={Colors.darkGray} />
                         </Pressable>
                     </View>

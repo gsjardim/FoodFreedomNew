@@ -22,6 +22,6 @@ export const setValueToDatabase = async (reference, value, callback) => {
 }
 
 export const getValueFromDatabase = async (ref) => {
-    return database().ref(ref).get()
+    return database().ref(ref).once('value')
 }
 

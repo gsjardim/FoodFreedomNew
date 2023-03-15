@@ -51,7 +51,10 @@ export const saveJournalEntry = (entry, callback) => {
     if (entry.isEmpty()) entry = null;
     setValueToDatabase(ref, entry, callback)
         .then(() => {
-            if (store.getState().journalEntries.diaryEntries.length > 0 && entry != null) {
+            if(store.getState().journalEntries.diaryEntries.length == 0 && entry != null){
+                getDataFromDbAndSetDiaryEntries(keyDateToDate(entry.date))
+            }
+            else if (store.getState().journalEntries.diaryEntries.length > 0 && entry != null) {
                 let month = keyDateToDate(entry.date).getMonth();
                 let monthD = keyDateToDate(store.getState().journalEntries.diaryEntries[0].date).getMonth();
                 if (month == monthD) {

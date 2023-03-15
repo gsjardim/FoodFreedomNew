@@ -61,7 +61,8 @@
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",
     "save": "^2.4.0",
-    "victory-native": "^36.6.8"
+    "victory-native": "^36.6.8",
+    "expo-task-manager": "~11.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

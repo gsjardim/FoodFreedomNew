@@ -1,4 +1,4 @@
-package com.gsjardim83.foodFreedomApp;
+package com.gsjardim83.foodfreedomRN;
 
 import android.os.Build;
 import android.os.Bundle;

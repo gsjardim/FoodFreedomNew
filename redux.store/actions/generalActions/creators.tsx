@@ -52,8 +52,12 @@ export const setFeelings= (snapshot: any) => {
     if(snapshot != null){
         let mentalObj = snapshot.MENTAL;
         let physicalObj = snapshot.PHYSICAL;
-        for(let key in mentalObj) mentalFeelings.push(mentalObj[key])
-        for(let key in physicalObj) physicalFeelings.push(physicalObj[key])
+        for(let key in mentalObj) {
+            mentalObj[key] && mentalFeelings.push(mentalObj[key])
+        }
+        for(let key in physicalObj){
+            physicalObj[key] && physicalFeelings.push(physicalObj[key])
+        } 
         mentalFeelings.sort(compareStrings)
         physicalFeelings.sort(compareStrings)
     }

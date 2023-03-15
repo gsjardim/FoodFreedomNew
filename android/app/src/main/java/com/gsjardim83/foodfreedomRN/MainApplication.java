@@ -1,4 +1,4 @@
-package com.gsjardim83.foodFreedomApp;
+package com.gsjardim83.foodfreedomRN;
 
 import android.app.Application;
 import android.content.res.Configuration;

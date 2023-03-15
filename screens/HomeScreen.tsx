@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import React from 'react'
-import { Image, View, Text, TouchableOpacity, StyleSheet, FlatList, SafeAreaView, Alert } from "react-native";
-import { DAILY_NOTIFICATION_ID, getStorageData, LAST_NEW_VIDEO, PUSH_TOKEN, SETTINGS, storeString } from "../dao/internalStorage";
+import { Image, View, Text, TouchableOpacity, StyleSheet, FlatList, SafeAreaView, Alert, Platform } from "react-native";
+import { DAILY_NOTIFICATION_ID, deleteStorageData, getStorageData, LAST_NEW_VIDEO, PUSH_TOKEN, SETTINGS, storeString } from "../dao/internalStorage";
 import store from "../redux.store/configureStore";
 import { Colors } from '../resources/colors';
 import { compareDates, dateToKeyDate, getFormattedDate, keyDateToDate, stringToTime } from "../resources/common";
@@ -12,6 +12,7 @@ import { AlertDialogStrings, ButtonStrings, HomeScreenStrings, NotificationsStri
 import * as Notifications from "expo-notifications";
 import { scheduleDailyReminder } from "../resources/notificationHelper";
 import { saveUserPushtoken } from "../dao/userDAO";
+
 
 const dateSelectorViewSize = PhoneDimensions.window.width / 10;
 
@@ -49,6 +50,12 @@ const DateSelectorCircle = (props: any) => {
 export const HomeScreen = ({ navigation }: any) => {
 
 
+    const notificationListener = useRef<any>();
+    const responseListener = useRef<any>();
+
+
+    
+
     const startActivity = (activity: string) => {
         if (compareDates(selectedDate, new Date()) < 0) {
             Alert.alert('Past date alert', 'You are creating/editing a record for a past date. Continue?', [
@@ -69,7 +76,7 @@ export const HomeScreen = ({ navigation }: any) => {
 
     }
 
-    let dates : Array<any> = [];
+    let dates: Array<any> = [];
     let ind = 30;
     while (ind >= 0) {
         let dateObj = new Date()
@@ -92,14 +99,6 @@ export const HomeScreen = ({ navigation }: any) => {
                     scheduleDailyReminder(DEFAULT_DAILY_REMINDER)
                 }
             })
-
-        // getStorageData(PUSH_TOKEN)
-        //     .then(token => {
-        //         if (token != null && token !== '') saveUserPushtoken(token);
-        //     })
-
-
-
 
         function areThereNewVideos() {
             let latestVideoDate = '';
