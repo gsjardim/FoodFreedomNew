@@ -33,8 +33,6 @@ const customPencil = require('../assets/images/pencil.png')
 
 //Login alternate options
 const googleLogo = require('../assets/images/google_logo.png')
-const facebookLogo = require('../assets/images/facebook_logo.jpeg')
-const instagramLogo = require('../assets/images/insta_logo.png')
 const appleButton = require('../assets/images/apple_button.png')
 
 //sleep screen
@@ -44,6 +42,7 @@ const happyFace = require('../assets/images/happy_blank.png')
 const sadFaceSelected = require('../assets/images/sad_selected.png')
 const fairFaceSelected = require('../assets/images/neutral_selected.png')
 const happyFaceSelected = require('../assets/images/happy_selected.png')
+const noFaceSelected = require('../assets/images/question_mark.png')
 
 //Bottom tab
 const reportGreen = require('../assets/images/reports_green.png') 
@@ -93,8 +92,6 @@ export {
     happyFaceSelected,
     profilePic,
     googleLogo,
-    facebookLogo,
-    instagramLogo,
     waterBackground,
     foodBackground,
     sleepBackground,
@@ -102,6 +99,7 @@ export {
     generalBackground,
     customPencil,
     appleButton,
+    noFaceSelected,
 }
 
   

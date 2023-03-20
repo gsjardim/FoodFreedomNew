@@ -1,4 +1,4 @@
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import React from 'react';
 import { View, Text, StyleSheet, Modal, Pressable, Image, Platform, TouchableOpacity } from "react-native";
 import { FlatList, TextInput } from "react-native-gesture-handler";
@@ -19,6 +19,7 @@ import { queryJournalEntriesByDateInterval } from "../dao/journalEntryDAO";
 import { getJournalEntries, setHistoryJournalEntries } from "../redux.store/actions/journalActions/creators";
 import { useLinkProps } from "@react-navigation/native";
 import { useFocusEffect } from '@react-navigation/native';
+import { ButtonStrings } from "../resources/strings";
 
 const IconSize = PhoneDimensions.window.width * 0.08;
 
@@ -51,16 +52,6 @@ export const HistoryScreen = ({ navigation }: any) => {
         return unsubscribe;
     }, [])
 
-    // useFocusEffect(
-    //     () => {
-    //         console.log('History screen was focused (UseFocusEffect)')
-    //         console.log('Data length ' + data.length)
-    //         if(data.length > 0) {
-    //             alert('Data may be out of date. Please refresh by doing a new search')
-    //         }
-       
-    //     }
-    //   );
 
 
     const NewSearchPressable = () => {
@@ -101,18 +92,17 @@ export const HistoryScreen = ({ navigation }: any) => {
 
         const filterByDateAndRate = (entries: JournalEntry[]) => {
 
-            // console.log('\nUnfiltered results:\n' + JSON.stringify(entries))
             let results = entries.filter((entry) => {
                 return (
                     (compareDates(fromDate, keyDateToDate(entry.date)) <= 0) && (compareDates(toDate, keyDateToDate(entry.date)) >= 0) &&
                     (entry.sleepRecord == null && entry.foodMoodRecords == null) ||
                     ((goodChecked && ((entry.sleepRecord?.grade === RATE_HAPPY) || entry.foodMoodRecords?.find(item => item.rate === RATE_HAPPY) != undefined))
                         || (neutralChecked && ((entry.sleepRecord?.grade === RATE_FAIR) || entry.foodMoodRecords?.find(item => item.rate === RATE_FAIR) != undefined))
-                        || (badChecked && ((entry.sleepRecord?.grade === RATE_SAD) || entry.foodMoodRecords?.find(item => item.rate === RATE_SAD) != undefined)))
+                        || (badChecked && ((entry.sleepRecord?.grade === RATE_SAD) || entry.foodMoodRecords?.find(item => item.rate === RATE_SAD) != undefined))) ||
+                    (entry.foodMoodRecords != null && entry.foodMoodRecords?.find(item => item.rate === '') != undefined)
                 )
             })
 
-            // console.log('\nResults:\n' + JSON.stringify(results))
             return results;
         }
 
@@ -121,7 +111,7 @@ export const HistoryScreen = ({ navigation }: any) => {
             const filterResults = (data: JournalEntry[]) => {
                 onSearch(filterByDateAndRate(data), { startDate: fromDate, endDate: toDate })
             }
-
+            console.log('From: ' + fromDate.toLocaleDateString() + ' to: ' + toDate.toLocaleDateString())
             queryJournalEntriesByDateInterval(dateToKeyDate(fromDate), dateToKeyDate(toDate), filterResults)
 
         }
@@ -208,7 +198,7 @@ export const HistoryScreen = ({ navigation }: any) => {
             }
         }
 
-       
+
 
         //Search dialog render
         return (
@@ -287,12 +277,21 @@ export const HistoryScreen = ({ navigation }: any) => {
                             </View>
                         </View>
 
-                        <CustomButton
-                            onPress={onPressSearchEntries}
-                            label={'Search'}
-                            roundCorners={true}
-                            width={PhoneDimensions.window.width * 0.5}
-                        />
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', width: '100%' }}>
+
+                            <CustomButton
+                                onPress={onPressSearchEntries}
+                                label={'Search'}
+                                roundCorners={true}
+                                width={PhoneDimensions.window.width * 0.35}
+                            />
+                            <CustomButton
+                                onPress={() => setShowFilters(false)}
+                                label={ButtonStrings.cancelButton}
+                                roundCorners={true}
+                                width={PhoneDimensions.window.width * 0.35}
+                            />
+                        </View>
 
                     </View>
 

@@ -6,7 +6,7 @@ import { Colors } from '../resources/colors';
 import { Activities, FontFamilies, FontSizes, neutralMenuOption, PencilIconSize, RATE_FAIR, RATE_HAPPY, RATE_SAD, ToastDuration } from "../resources/constants";
 import PhoneDimensions from "../resources/layout";
 import { dateToKeyDate, keyDateToStringDate } from "../resources/common";
-import { diary, dark_diary, exerciseJournal, fairFace, fairFaceSelected, foodMoodJournal, happyFace, happyFaceSelected, sadFace, sadFaceSelected, sleepJournal, waterJournal } from "../resources/imageObj";
+import { diary, dark_diary, exerciseJournal, fairFace, fairFaceSelected, foodMoodJournal, happyFace, happyFaceSelected, sadFace, sadFaceSelected, sleepJournal, waterJournal, noFaceSelected } from "../resources/imageObj";
 import { FoodMoodJournal, JournalEntry } from "../models/JournalEntryModel";
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { ButtonStrings, HistoryScreenStrings } from "../resources/strings";
@@ -31,7 +31,7 @@ const getRowIcons = (entry: JournalEntry) => {
 
     for (let key of entryKeys) {
         if (key.obj != null) {
-            icons.push(<Image source={key.src} style={styles.icon} key={key.key} />)
+            icons.push(<Image source={key.src} style={[styles.icon, key.key == 'ex' && {width: IconSize * 1.5, height: IconSize * 1.5}]} key={key.key} />)
         }
         else {
             icons.push(<View style={styles.icon} key={key.key} />)
@@ -257,8 +257,6 @@ const HistoryEntry = (props: EntryProps) => {
                                 }
 
 
-
-                                // && record.pictureUri.includes('http')
                                 return (
 
                                     <View style={{ width: '100%', marginTop: index == 0 ? 10 : 20 }} key={index.toString()}>
@@ -272,7 +270,7 @@ const HistoryEntry = (props: EntryProps) => {
                                             </View>
                                             <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', paddingLeft: 4 }}>
                                                 <Image
-                                                    source={record.rate === RATE_HAPPY ? happyFaceSelected : record.rate === RATE_FAIR ? fairFaceSelected : sadFaceSelected}
+                                                    source={record.rate === RATE_HAPPY ? happyFaceSelected : record.rate === RATE_FAIR ? fairFaceSelected : record.rate === RATE_SAD ? sadFaceSelected : noFaceSelected}
                                                     style={{ width: IconSize, height: IconSize, marginBottom: 15 }}
                                                 />
                                                 {(record.pictureUri !== '') && <Image source={{ uri: record.pictureUri }} style={{ width: PictureSize, height: PictureSize, borderRadius: 5 }} />}

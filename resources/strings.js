@@ -160,8 +160,8 @@ export const LoginRegisterScreenStrings = {
 }
 
 export const WelcomeScreenStrings = {
-    welcomeText: 'Welcome to your journal',
-    startButton: 'Let\'s start your day'
+    welcomeText: 'Hello, ',
+    startButton: 'Welcome to your journal'
 }
 
 export const AlertDialogStrings = {

@@ -68,6 +68,8 @@
     <string>The app accesses your photos to let you share them with your friends.</string>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>
+    <key>UIBackgroundModes</key>
+    <string>remote-notification</string>
     <key>UIRequiredDeviceCapabilities</key>
     <array>
       <string>armv7</string>

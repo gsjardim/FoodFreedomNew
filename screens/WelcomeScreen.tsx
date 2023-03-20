@@ -84,7 +84,7 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
                 <View style={[styles.headerView, styles.viewCommon]}>
                     {(userPhoto != null) && <Image source={userPhoto} style={styles.userImage} />}
 
-                    <Text style={styles.welcomeText}>{WelcomeScreenStrings.welcomeText + '\n' + userName}</Text>
+                    <Text style={styles.welcomeText}>{WelcomeScreenStrings.welcomeText + ' ' + userName + '!'}</Text>
 
                 </View>
 
@@ -97,7 +97,7 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
                         label={WelcomeScreenStrings.startButton}
                         roundCorners={true}
                         onPress={() => navigation.navigate('Main')}
-                        width={PhoneDimensions.window.width * 0.7}
+                        width={PhoneDimensions.window.width * 0.85}
                     />
                 </View>
 

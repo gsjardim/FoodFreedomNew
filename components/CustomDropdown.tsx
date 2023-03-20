@@ -3,6 +3,8 @@ import React from 'react';
 import { Colors } from "../resources/colors";
 import PhoneDimensions from "../resources/layout";
 import { ScrollView, } from "react-native-gesture-handler";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import { neutralMenuOption } from "../resources/constants";
 
 interface DropdownProps {
     showModal: boolean,
@@ -21,6 +23,23 @@ const CustomDropDown = ({ showModal, onSelect, data }: DropdownProps) => {
             animationType="slide"
         >
             <View style={ModalStyle.wrapper}>
+                {/** Cancel / Clear button */}
+                <Pressable
+                    style={{
+                        alignSelf: 'flex-end',
+                        position: 'absolute',
+                        top: 20,
+                        right: 20,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: Colors.white,
+                        width: 35,
+                        height: 35,
+                    }}
+                    onPress={() => onSelect(neutralMenuOption)}
+                >
+                    <Ionicons name="close" color={Colors.darkGray} size={35}/>
+                </Pressable>
                 <FlatList
                     style={ModalStyle.containerView}
                     contentContainerStyle={{ paddingVertical: 10 }}
@@ -56,7 +75,7 @@ const ModalStyle = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'rgba(60, 60, 60, 0.4)',
-        paddingVertical: PhoneDimensions.window.height * 0.1,
+        paddingVertical: PhoneDimensions.window.height * 0.2,
     },
 
     containerView: {

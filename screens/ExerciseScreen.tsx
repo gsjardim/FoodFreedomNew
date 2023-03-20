@@ -275,12 +275,12 @@ const ExerciseScreen = ({ route, navigation }: any) => {
             <View style={{ width: '100%', flex: 1 }} />
 
             <View style={{ width: '100%', flex: 5, }}>
-                <FlatList
+               { (!editMode) && <FlatList
                     data={items}
                     contentContainerStyle={{ paddingHorizontal: shadowOffset.width + 2, paddingVertical: shadowOffset.height + 2 }}
                     keyExtractor={(_item, index) => index.toString()}
                     renderItem={(item) => <ExerciseCard item={item} onSelect={onSelectCard} onEdit={handleAddExercise} onDelete={deleteItem} selectedIndex={editIndex} isPressed={item.index == editIndex}/>}
-                />
+                />}
             </View>
             <View style={{ width: '100%', flex: 1 }} />
             <View style={styles.buttonsView}>

@@ -32,6 +32,7 @@ import { updateHistoryJournalEntries } from "../redux.store/actions/journalActio
 import * as Notifications from "expo-notifications";
 import { getStorageData, SETTINGS } from "../dao/internalStorage";
 import EmptyDialog from "../components/EmptyDialog";
+import { getNotificationsPermissionCurrentStatus, requestNotificationsPermissionsAndSavePushToken } from "../resources/notificationHelper";
 
 //Here is the intended flow:
 
@@ -216,6 +217,7 @@ const FoodMoodScreen = ({ route, navigation }: any) => {
 
         //check if there is a meal now, so that the reminder is triggered
         let isThereMealNow = false;
+       
         if (route.params.entry == null) { //Only when not editing a history entry
             
             for (let fmj of fmjArray) {

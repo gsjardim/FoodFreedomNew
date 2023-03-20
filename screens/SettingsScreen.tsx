@@ -13,7 +13,7 @@ import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { get12hourFormatTime, getFormattedDate, stringToTime } from "../resources/common";
 import { getStorageData, SETTINGS, storeJSON } from "../dao/internalStorage";
 import ActivityIndicatorOverlay from "../components/OverlayActivityIndicator";
-import { scheduleDailyReminder } from "../resources/notificationHelper";
+import { getNotificationsPermissionCurrentStatus, scheduleDailyReminder } from "../resources/notificationHelper";
 
 
 
@@ -80,7 +80,7 @@ export const SettingsScreen = ({ navigation }: any) => {
         setMealReminderTimer(timer)
     }
 
-    const onSave = () => {
+    const onSave = async () => {
         if (mealReminderTimer != initialTime || dailyReminderTimer != initialReminder) {
             //Save settings
             let settings = {

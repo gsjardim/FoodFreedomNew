@@ -3,7 +3,6 @@ import { deleteStorageData, getStorageData, NOTIFICATIONS, storeJSON } from "./i
 
 async function saveNotification(notification) {
     const value = await getStorageData(NOTIFICATIONS);
-    console.log('Save notifications current value - ' + value)
     let notificationArray;
     if (value == null ) {
         notificationArray = new Array();

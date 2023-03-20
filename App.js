@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import { Colors } from './resources/colors';
@@ -18,14 +18,11 @@ import { initializeAppData } from './dao/userDAO';
 import { GoogleWebClient } from './resources/constants';
 import report from './components/CrashReport';
 import { setSocialAuthentication } from './redux.store/actions/userActions/creators';
-import * as Device from "expo-device";
-import report from "../components/CrashReport";
-import MyNotification from "../models/NotificationModel";
-import { saveNotification } from "../dao/notificationsDAO";
-import { setNewMessageStatus } from "../redux.store/actions/generalActions/creators";
+import MyNotification from './models/NotificationModel';
+import { saveNotification } from './dao/notificationsDAO';
+import { setNewMessageStatus } from './redux.store/actions/generalActions/creators';
 import * as TaskManager from 'expo-task-manager';
-import { AlertDialogStrings } from './resources/strings';
-import { PUSH_TOKEN, storeString } from './dao/internalStorage';
+import { getFormattedDate } from './resources/common';
 
 
 LogBox.ignoreLogs(['Setting a timer', 'AsyncStorage']);
@@ -39,6 +36,27 @@ Notifications.setNotificationHandler({
     shouldSetBadge: true
   })
 });
+
+const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
+
+TaskManager.defineTask(
+  BACKGROUND_NOTIFICATION_TASK,
+  ({ data, error, executionInfo }) => {
+    if (error) {
+      report.log("error occurred");
+    }
+    if (data) {
+      let newNotification = new MyNotification(
+        getFormattedDate(new Date(data.notification.sentTime)),
+        data?.notification.data.title || 'Title',
+        data?.notification.data.message || 'Message'
+      )
+      saveNotification(newNotification).then(() => store.dispatch(setNewMessageStatus(true))).catch(err => console.log('Error saving notification ' + err));
+    }
+  }
+);
+
+Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
 
 
 export default function App() {
@@ -55,7 +73,8 @@ export default function App() {
     Verdana: require('./assets/fonts/verdana.ttf'),
   });
 
-
+  const notificationListener = useRef();
+  const responseListener = useRef();
   const LoginScreen = 'LoginScreen';
   const WelcomeScreen = 'Welcome';
 
@@ -67,70 +86,36 @@ export default function App() {
 
   useEffect(() => {
 
+    registerForNotifications()
+      .then(value => {
+        if (value) {
+          if (Platform.OS === 'android') {
+            Notifications.setNotificationChannelAsync('default', {
+              name: 'default',
+              importance: Notifications.AndroidImportance.MAX,
+              vibrationPattern: [0, 250, 250, 250],
+              lightColor: '#FF231F7C',
 
-    // Get user's permission for push notifications
-    const getPermission = async () => {
-      if (Device.isDevice) {
-        const { status: existingStatus } = await Notifications.getPermissionsAsync();
-        console.log('Login screen - Notifications.PermissionStatus = ' + existingStatus);
-        let finalStatus = existingStatus;
-        if (existingStatus !== 'granted') {
-          const { status } = await Notifications.requestPermissionsAsync();
-          finalStatus = status;
+            });
+          }
+
+          notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            const newNotification = new MyNotification(
+              getFormattedDate(new Date(notification.date)),
+              notification.request.content.title || 'Title',
+              notification.request.content.body || 'Message'
+            )
+            if (newNotification.title !== NotificationsStrings.mealReminderTitle && newNotification.content !== NotificationsStrings.mealReminder)
+              saveNotification(newNotification).then(() => store.dispatch(setNewMessageStatus(true))).catch(err => console.log('Error saving notification ' + err));
+          });
+
+          responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log('Response to notification: ' + JSON.stringify(response))
+          });
         }
-        if (finalStatus !== 'granted') {
-          alert(AlertDialogStrings.notificationsPermissions);
-          deleteStorageData(PUSH_TOKEN)
-          return;
-        }
-        
-        const token = (await Notifications.getExpoPushTokenAsync({ experienceId: '@gsjardim83/foodFreedomApp' })).data;
-        storeString(PUSH_TOKEN, token)
-        saveUserPushtoken(token);
-      } else {
-        alert('Must use physical device for Push Notifications');
-      }
-
-      if (Platform.OS === 'android') {
-        Notifications.setNotificationChannelAsync('default', {
-          name: 'default',
-          importance: Notifications.AndroidImportance.MAX,
-          vibrationPattern: [0, 250, 250, 250],
-          lightColor: '#FF231F7C',
-
-        });
-      }
-    }
-
-    getPermission()
+      })
       .catch(error => report.recordError(error));
 
-
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      console.log('Notification received - ' + notification.request.content.title)
-      const newNotification = new MyNotification(
-        getFormattedDate(new Date(notification.date)),
-        notification.request.content.title || 'Title',
-        notification.request.content.body || 'Message'
-      )
-      if (newNotification.title !== NotificationsStrings.mealReminderTitle && newNotification.content !== NotificationsStrings.mealReminder)
-        saveNotification(newNotification).then(() => store.dispatch(setNewMessageStatus(true))).catch(err => console.log('Error saving notification ' + err));
-    });
-
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(JSON.stringify(response))
-    });
-
-
-    const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
-
-    TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, ({ data, error, executionInfo }) => {
-      //Do something with data
-      console.log('Received data in the background: ' + JSON.stringify(data))
-
-    });
-
-    Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
 
     return () => {
       Notifications.removeNotificationSubscription(notificationListener.current);
@@ -157,7 +142,6 @@ export default function App() {
           let hasPasswordAuth = false;
           for (let obj of providerData) {
             if (obj.providerId === 'password') hasPasswordAuth = true;
-            console.log('App.js loaded; User has password - ' + JSON.stringify(user))
           }
           if (!hasPasswordAuth) store.dispatch(setSocialAuthentication(true))
           initializeAppData(user, () => setFirstScreen(WelcomeScreen));

@@ -1,6 +1,39 @@
 import * as Notifications from "expo-notifications";
-import { DAILY_NOTIFICATION_ID, getStorageData, storeString } from "../dao/internalStorage";
-import { NotificationsStrings } from "./strings";
+import { DAILY_NOTIFICATION_ID, deleteStorageData, getStorageData, PUSH_TOKEN, storeString } from "../dao/internalStorage";
+import {  NotificationsStrings } from "./strings";
+import { saveUserPushtoken } from "../dao/userDAO";
+import { Platform } from "react-native";
+
+const registerForNotifications = async () => {
+
+    const existingStatus = await getNotificationsPermissionCurrentStatus()
+    if (existingStatus !== 'granted') {
+        return await requestNotificationsPermissionsAndSavePushToken()
+    }
+
+}
+
+const requestNotificationsPermissionsAndSavePushToken = async () => {
+    const res = await Notifications.requestPermissionsAsync();
+    console.log('Permission status: ' + res.status);
+    console.log('IOS permission status: ' + res.ios.status);
+    if ((Platform.OS === 'android' && res.status !== 'granted') || (Platform.OS === 'ios' && res.ios.status !== Notifications.IosAuthorizationStatus.AUTHORIZED)) {
+        deleteStorageData(PUSH_TOKEN)
+        return false;
+    }
+    const token = (await Notifications.getExpoPushTokenAsync({ experienceId: '@gsjardim83/foodFreedomApp' })).data;
+    console.log('Saving push token');
+    storeString(PUSH_TOKEN, token)
+    saveUserPushtoken(token);
+    return true;
+
+
+}
+
+const getNotificationsPermissionCurrentStatus = async () => {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    return existingStatus;
+}
 
 async function scheduleDailyReminder(trigger) {
 
@@ -31,4 +64,4 @@ async function scheduleDailyReminder(trigger) {
 
 }
 
-export { scheduleDailyReminder }
+export { scheduleDailyReminder, registerForNotifications, getNotificationsPermissionCurrentStatus, requestNotificationsPermissionsAndSavePushToken }

@@ -50,11 +50,6 @@ const DateSelectorCircle = (props: any) => {
 export const HomeScreen = ({ navigation }: any) => {
 
 
-    const notificationListener = useRef<any>();
-    const responseListener = useRef<any>();
-
-
-    
 
     const startActivity = (activity: string) => {
         if (compareDates(selectedDate, new Date()) < 0) {

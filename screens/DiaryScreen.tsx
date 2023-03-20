@@ -78,17 +78,19 @@ const CalendarPicker = (props: CalendarProps) => {
             let currentDate = new Date(displayDate);
             currentDate.setDate(date);
             for (let entry of data) {
-                if (dateToKeyDate(currentDate) === entry.date && entry.diaryRecord != null) {
+                if (dateToKeyDate(currentDate) === entry.date && entry.diaryRecord != null && entry.diaryRecord?.text !== '') {
                     return Colors.primaryColor;
                 }
             }
+            if(compareDates(currentDate, today) > 0) return Colors.white;
+
             return Colors.lightGray;
         }
 
         function onPressDate() {
             let currentDate = new Date(displayDate);
             currentDate.setDate(date);
-            props.onPressDate(dateToKeyDate(currentDate))
+            if(compareDates(currentDate, today) <= 0)  props.onPressDate(dateToKeyDate(currentDate))
         }
 
         return (
