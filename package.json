@@ -21,7 +21,7 @@
     "@react-navigation/drawer": "^6.3.1",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/stack": "^6.1.1",
-    "expo": "~48.0.5",
+    "expo": "~48.0.6",
     "expo-app-loading": "~2.1.0",
     "expo-apple-authentication": "~6.0.1",
     "expo-application": "~5.1.1",

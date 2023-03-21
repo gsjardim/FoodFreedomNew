@@ -23,6 +23,8 @@ import { saveNotification } from './dao/notificationsDAO';
 import { setNewMessageStatus } from './redux.store/actions/generalActions/creators';
 import * as TaskManager from 'expo-task-manager';
 import { getFormattedDate } from './resources/common';
+import { registerForNotifications } from './resources/notificationHelper';
+import { NotificationsStrings } from './resources/strings';
 
 
 LogBox.ignoreLogs(['Setting a timer', 'AsyncStorage']);
@@ -46,8 +48,9 @@ TaskManager.defineTask(
       report.log("error occurred");
     }
     if (data) {
+      console.log('Notification in background received: ' + JSON.stringify(data))
       let newNotification = new MyNotification(
-        getFormattedDate(new Date(data.notification.sentTime)),
+        getFormattedDate(new Date()),
         data?.notification.data.title || 'Title',
         data?.notification.data.message || 'Message'
       )
@@ -73,8 +76,8 @@ export default function App() {
     Verdana: require('./assets/fonts/verdana.ttf'),
   });
 
-  const notificationListener = useRef();
-  const responseListener = useRef();
+  // const notificationListener = useRef();
+  // const responseListener = useRef();
   const LoginScreen = 'LoginScreen';
   const WelcomeScreen = 'Welcome';
 
@@ -86,9 +89,9 @@ export default function App() {
 
   useEffect(() => {
 
-    registerForNotifications()
-      .then(value => {
-        if (value) {
+    registerForNotifications();
+      // .then(value => {
+      //   if (value) {
           if (Platform.OS === 'android') {
             Notifications.setNotificationChannelAsync('default', {
               name: 'default',
@@ -99,9 +102,10 @@ export default function App() {
             });
           }
 
-          notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+          const notificationListener = Notifications.addNotificationReceivedListener(notification => {
+            console.log('Notification received: ' + JSON.stringify(notification))
             const newNotification = new MyNotification(
-              getFormattedDate(new Date(notification.date)),
+              getFormattedDate(new Date()),
               notification.request.content.title || 'Title',
               notification.request.content.body || 'Message'
             )
@@ -109,18 +113,20 @@ export default function App() {
               saveNotification(newNotification).then(() => store.dispatch(setNewMessageStatus(true))).catch(err => console.log('Error saving notification ' + err));
           });
 
-          responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+          const responseListener = Notifications.addNotificationResponseReceivedListener(response => {
             console.log('Response to notification: ' + JSON.stringify(response))
           });
-        }
-      })
-      .catch(error => report.recordError(error));
+
+          return () => {
+            Notifications.removeNotificationSubscription(notificationListener);
+            Notifications.removeNotificationSubscription(responseListener);
+          };
+        // }
+      // })
+      // .catch(error => report.recordError(error));
 
 
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
+    
 
   }, []);
 

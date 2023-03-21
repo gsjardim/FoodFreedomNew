@@ -199,20 +199,20 @@ export const mentalFeelings = [
     'Mentally stressed'    
 ];
 
-export const videosArray = [
-    {
-        dateCreated: 'Apr 01 2021',
-        description: 'Welcome to FOOD FREEDOM',
-        url: 'https://firebasestorage.googleapis.com/v0/b/ac-21w-team-8.appspot.com/o/videos%2FWelcome%20to%20the%20FF%20app.mp4?alt=media&token=24aa863f-dd1e-49ba-9cc6-d44a35908cf4',
-        thumbnail: require('../assets/images/Selection_012.png')
-    },
-    {
-        dateCreated: 'May 01 2021',
-        description: 'This video explains how to use the app. Enjoy!',
-        url: 'https://firebasestorage.googleapis.com/v0/b/ac-21w-team-8.appspot.com/o/videos%2FFF%20App%20Tutorial%20small.mp4?alt=media&token=83d64075-92e9-4860-ba56-f7ceff29c4ac',
-        thumbnail: require('../assets/images/Selection_013.png')
-    },
-]
+// export const videosArray = [
+//     {
+//         dateCreated: 'Apr 01 2021',
+//         description: 'Welcome to FOOD FREEDOM',
+//         url: 'https://firebasestorage.googleapis.com/v0/b/ac-21w-team-8.appspot.com/o/videos%2FWelcome%20to%20the%20FF%20app.mp4?alt=media&token=24aa863f-dd1e-49ba-9cc6-d44a35908cf4',
+//         thumbnail: require('../assets/images/Selection_012.png')
+//     },
+//     {
+//         dateCreated: 'May 01 2021',
+//         description: 'This video explains how to use the app. Enjoy!',
+//         url: 'https://firebasestorage.googleapis.com/v0/b/ac-21w-team-8.appspot.com/o/videos%2FFF%20App%20Tutorial%20small.mp4?alt=media&token=83d64075-92e9-4860-ba56-f7ceff29c4ac',
+//         thumbnail: require('../assets/images/Selection_013.png')
+//     },
+// ]
 
 export const messagesArray = [
     {

@@ -14,9 +14,9 @@
 		96905EF65AED1B983A6B3ABC /* libPods-foodFreedomApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-foodFreedomApp.a */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		E3B80C43F9D74EBCA19F913A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62C96ED54F8D4C8886B857C0 /* GoogleService-Info.plist */; };
-		A753B8A23EF44516955D7067 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1CF92112FF94BD39ADAA65C /* noop-file.swift */; };
-		1FFC12A1829045499A1DD8A7 /* messageringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 140A217E28904A2E8C346801 /* messageringtone.mp3 */; };
+		8D5C58ABD377474180ECE7F4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ADAE731159F043D5B33BDD7C /* GoogleService-Info.plist */; };
+		13EB554759ED40398CBAE1CC /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E557ADBA914729B7DBF20E /* noop-file.swift */; };
+		56718A0F96DC46B1B6E35F23 /* messageringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 54B2D548CA71449DBA2260E5 /* messageringtone.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,9 +34,9 @@
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-foodFreedomApp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		62C96ED54F8D4C8886B857C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; name = "GoogleService-Info.plist"; path = "foodFreedomApp/GoogleService-Info.plist"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = text.plist.xml; explicitFileType = undefined; includeInIndex = 0; };
-		C1CF92112FF94BD39ADAA65C /* noop-file.swift */ = {isa = PBXFileReference; name = "noop-file.swift"; path = "foodFreedomApp/noop-file.swift"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.swift; explicitFileType = undefined; includeInIndex = 0; };
-		140A217E28904A2E8C346801 /* messageringtone.mp3 */ = {isa = PBXFileReference; name = "messageringtone.mp3"; path = "foodFreedomApp/messageringtone.mp3"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		ADAE731159F043D5B33BDD7C /* GoogleService-Info.plist */ = {isa = PBXFileReference; name = "GoogleService-Info.plist"; path = "foodFreedomApp/GoogleService-Info.plist"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = text.plist.xml; explicitFileType = undefined; includeInIndex = 0; };
+		81E557ADBA914729B7DBF20E /* noop-file.swift */ = {isa = PBXFileReference; name = "noop-file.swift"; path = "foodFreedomApp/noop-file.swift"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.swift; explicitFileType = undefined; includeInIndex = 0; };
+		54B2D548CA71449DBA2260E5 /* messageringtone.mp3 */ = {isa = PBXFileReference; name = "messageringtone.mp3"; path = "foodFreedomApp/messageringtone.mp3"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,9 +62,9 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				62C96ED54F8D4C8886B857C0 /* GoogleService-Info.plist */,
-				C1CF92112FF94BD39ADAA65C /* noop-file.swift */,
-				140A217E28904A2E8C346801 /* messageringtone.mp3 */,
+				ADAE731159F043D5B33BDD7C /* GoogleService-Info.plist */,
+				81E557ADBA914729B7DBF20E /* noop-file.swift */,
+				54B2D548CA71449DBA2260E5 /* messageringtone.mp3 */,
 			);
 			name = foodFreedomApp;
 			sourceTree = "<group>";
@@ -205,8 +205,8 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				E3B80C43F9D74EBCA19F913A /* GoogleService-Info.plist in Resources */,
-				1FFC12A1829045499A1DD8A7 /* messageringtone.mp3 in Resources */,
+				8D5C58ABD377474180ECE7F4 /* GoogleService-Info.plist in Resources */,
+				56718A0F96DC46B1B6E35F23 /* messageringtone.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,7 +300,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
-				A753B8A23EF44516955D7067 /* noop-file.swift in Sources */,
+				13EB554759ED40398CBAE1CC /* noop-file.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

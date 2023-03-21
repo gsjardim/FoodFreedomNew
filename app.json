@@ -19,7 +19,7 @@
       "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.gsjardim83.foodfreedomRN",
       "infoPlist":{
-        "UIBackgroundModes":"remote-notification"
+        "UIBackgroundModes":["remote-notification"]
       }
     },
     "android": {

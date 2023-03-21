@@ -7,9 +7,10 @@ import { Platform } from "react-native";
 const registerForNotifications = async () => {
 
     const existingStatus = await getNotificationsPermissionCurrentStatus()
-    if (existingStatus !== 'granted') {
+    console.log('Register for notifications function - existing status: ' + existingStatus)
+    //if (existingStatus !== 'granted') {
         return await requestNotificationsPermissionsAndSavePushToken()
-    }
+    //}
 
 }
 
