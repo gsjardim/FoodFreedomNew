@@ -33,6 +33,7 @@ import * as Notifications from "expo-notifications";
 import { getStorageData, SETTINGS } from "../dao/internalStorage";
 import EmptyDialog from "../components/EmptyDialog";
 import { getNotificationsPermissionCurrentStatus, requestNotificationsPermissionsAndSavePushToken } from "../resources/notificationHelper";
+import report from "../components/CrashReport";
 
 //Here is the intended flow:
 
@@ -179,7 +180,7 @@ const FoodMoodScreen = ({ route, navigation }: any) => {
         let currentUser: UserModel = store.getState().users.currentUser;
         let storageReference = '/images/' + currentUser?.id + '/';
         let dbDate = currentDate
-        let targetEntry : any= null
+        let targetEntry: any = null
         // let exists = false
 
         if (journalEntry != null) {
@@ -217,9 +218,9 @@ const FoodMoodScreen = ({ route, navigation }: any) => {
 
         //check if there is a meal now, so that the reminder is triggered
         let isThereMealNow = false;
-       
+
         if (route.params.entry == null) { //Only when not editing a history entry
-            
+
             for (let fmj of fmjArray) {
                 if (stringToTime(fmj.time, currentDate).getTime() > (new Date().getTime() - (MEAL_REMINDER_THRESHOLD * 60 * 1000))) {
                     isThereMealNow = true;
@@ -230,9 +231,9 @@ const FoodMoodScreen = ({ route, navigation }: any) => {
                 setShowMealReminderDialog(true)
             }
         }
-        
+
         !isThereMealNow && showToastAndClose()
-       
+
 
     }
 
@@ -262,8 +263,8 @@ const FoodMoodScreen = ({ route, navigation }: any) => {
 
                         <View style={{ flexDirection: 'row', width: '100%', marginVertical: 20, alignItems: 'center', justifyContent: 'center' }}>
                             <Pressable onPress={() => {
-                                if(mealReminderTimer > 1) setMealReminderTimer(mealReminderTimer - 1)
-                            } }>
+                                if (mealReminderTimer > 1) setMealReminderTimer(mealReminderTimer - 1)
+                            }}>
                                 <Image source={minusButton} style={{ width: PLUS_BUTTON_SIZE, height: PLUS_BUTTON_SIZE }} />
                             </Pressable>
                             <Text style={{
@@ -279,7 +280,7 @@ const FoodMoodScreen = ({ route, navigation }: any) => {
 
                         <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                             <Pressable
-                                style={[styles.dialogButton,{ marginRight: 12 }]}
+                                style={[styles.dialogButton, { marginRight: 12 }]}
                                 onPress={() => {
 
                                     Notifications.scheduleNotificationAsync({
@@ -595,7 +596,7 @@ export const FMJournalForm = (props: any) => {
     const onClosePictureWindow = () => setShowPictureWindow(false);
 
     const addFoodMoodJournalObject = () => {
-        let validInfo = (isMealNow && foodDescription?.trim() !== '') || (!isMealNow && foodDescription?.trim() !== '' && selectedFace !== '') 
+        let validInfo = (isMealNow && foodDescription?.trim() !== '') || (!isMealNow && foodDescription?.trim() !== '' && selectedFace !== '')
         if (validInfo) {
 
             let fmjObj = new FoodMoodJournal(
@@ -688,46 +689,50 @@ export const FMJournalForm = (props: any) => {
     const takeAndSetPicture = async (mode?: number) => {
 
 
-        let result;
+        let result: ImagePicker.ImagePickerResult;
+        try {
+            if (mode === ADD_FROM_GALLERY) {
 
-        if (mode === ADD_FROM_GALLERY) {
-
-            result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true,
-                aspect: [4, 4],
-                quality: 1,
-            });
-
-        }
-        else {
-            if (status?.granted) {
-                result = await ImagePicker.launchCameraAsync({
-
+                result = await ImagePicker.launchImageLibraryAsync({
                     mediaTypes: ImagePicker.MediaTypeOptions.Images,
                     allowsEditing: true,
                     aspect: [4, 4],
                     quality: 1,
                 });
+
             }
             else {
-                let permission = await requestPermission();
-                permission.granted ?
+                if (status?.granted) {
                     result = await ImagePicker.launchCameraAsync({
 
                         mediaTypes: ImagePicker.MediaTypeOptions.Images,
                         allowsEditing: true,
                         aspect: [4, 4],
                         quality: 1,
-                    })
-                    :
-                    result = null;
+                    });
+                }
+                else {
+                    let permission = await requestPermission();
+                    permission.granted ?
+                        result = await ImagePicker.launchCameraAsync({
+
+                            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                            allowsEditing: true,
+                            aspect: [4, 4],
+                            quality: 1,
+                        })
+                        :
+                        result = null;
+
+                }
 
             }
-
+            if (result != null && result !== undefined && !result.canceled) {
+                setPictureUri(result.assets[0].uri);
+            }
         }
-        if (result != null && result !== undefined && !result.cancelled) {
-            setPictureUri(result.uri);
+        catch (error) {
+            report.recordError(error)
         }
         setPictBtnPressed(false);
     }
@@ -737,7 +742,7 @@ export const FMJournalForm = (props: any) => {
         setShowWheel(true)
     }
 
-    
+
 
 
     return (

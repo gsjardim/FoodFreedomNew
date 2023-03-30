@@ -68,8 +68,8 @@
     <string>The app accesses your photos to let you share them with your friends.</string>
     <key>UIBackgroundModes</key>
     <array>
-      <string>fetch</string>
       <string>remote-notification</string>
+      <string>fetch</string>
     </array>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>

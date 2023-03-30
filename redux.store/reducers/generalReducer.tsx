@@ -1,5 +1,5 @@
 
-import { GET, UPDATE, LOGIN_READY, LOGIN_NOT_READY, SET_FEELINGS, SET_VIDEOS, SET_IS_DATA_LOADING, NEW_MESSAGE } from '../actions/generalActions/types';
+import { GET, LOGIN_READY, LOGIN_NOT_READY, SET_FEELINGS, SET_VIDEOS, SET_IS_DATA_LOADING} from '../actions/generalActions/types';
 
 
 const initialState = {
@@ -10,7 +10,6 @@ const initialState = {
     videosArray: [],
     isLoginScreenReady: false,
     isDataLoading: false,
-    isThereNewMessage: false,
 }
 
 const generalParamsReducer = (state: any = initialState, action: any) => {
@@ -28,8 +27,6 @@ const generalParamsReducer = (state: any = initialState, action: any) => {
             return { ...state, videosArray: action.payload }
         case SET_IS_DATA_LOADING:
             return { ...state, isDataLoading: action.payload }
-        case NEW_MESSAGE:
-            return { ...state, isThereNewMessage: action.payload }
         default:
             return state;
     }

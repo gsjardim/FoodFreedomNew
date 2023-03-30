@@ -1,24 +1,23 @@
 import React from 'react'
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, ImageBackground } from "react-native";
-import { Value } from "react-native-reanimated";
+import { View, Text, StyleSheet, Image, ImageBackground, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CustomButton } from "../components/CustomButton";
 import { USERS_REF } from "../dao/databaseCommon";
 import database from '@react-native-firebase/database'
-import storage from '@react-native-firebase/storage'
-import auth from '@react-native-firebase/auth'
 import UserModel from "../models/UserModel";
 import { updateUser } from "../redux.store/actions/userActions/creators";
 import store from "../redux.store/configureStore";
 import { Colors } from '../resources/colors';
 import { DefaultPadding, FontFamilies, FontSizes } from "../resources/constants";
-import { exerciseBackground, foodBackground, generalBackground, SarahPicture, sleepBackground, waterBackground } from "../resources/imageObj";
+import { exerciseBackground, foodBackground, generalBackground, sleepBackground, waterBackground } from "../resources/imageObj";
 import PhoneDimensions from "../resources/layout";
-import { WelcomeScreenStrings } from "../resources/strings";
+import { NotificationsStrings, WelcomeScreenStrings } from "../resources/strings";
 import { PictureSize } from "./ProfileScreen";
-import { BackHandler } from "react-native";
-
+import { registerForNotifications } from '../resources/notificationHelper';
+import * as Notifications from "expo-notifications";
+import MyNotification from '../models/NotificationModel';
+import { dateToKeyDate, getFormattedDate } from '../resources/common';
 
 
 export const WelcomeScreen = ({ route, navigation }: any) => {
@@ -30,6 +29,43 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
     const [imageObj, setImageObj] = useState<any>(null)
     const [quoteContent, setQuoteContent] = useState('')
 
+    useEffect(() => {
+
+        registerForNotifications();
+
+        if (Platform.OS === 'android') {
+            Notifications.setNotificationChannelAsync('default', {
+                name: 'default',
+                importance: Notifications.AndroidImportance.MAX,
+                vibrationPattern: [0, 250, 250, 250],
+                lightColor: '#FF231F7C',
+
+            });
+        }
+
+
+        const responseListener = Notifications.addNotificationResponseReceivedListener(data => {
+            const isMealReminderNotification = (newNotification: MyNotification) => {
+                return newNotification.title == NotificationsStrings.mealReminderTitle && newNotification.content == NotificationsStrings.mealReminder
+            }
+            console.log('Response to notification: ' + JSON.stringify(data))
+            let newNotification = new MyNotification(
+                getFormattedDate(new Date()),
+                data?.notification.request.content.title || 'Title',
+                data?.notification.request.content.body || 'Message'
+            )
+            if (isMealReminderNotification(newNotification)) {
+                navigation.navigate('FoodMoodScreen', { currentDate: dateToKeyDate(new Date()) })
+            }
+
+            Notifications.setBadgeCountAsync(0)
+        });
+
+        return () => {
+            Notifications.removeNotificationSubscription(responseListener);
+        };
+
+    }, []);
 
     useEffect(() => {
         /**
@@ -37,7 +73,7 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
             * category of the selected quote.
             */
         let size = store.getState().general.quotesArray.length
-        let quoteObj : any = null
+        let quoteObj: any = null
         if (size != 0) {
             quoteObj = store.getState().general.quotesArray[Math.round(Math.random() * (size - 1))];
         }
@@ -77,7 +113,7 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
         return unsubscribe;
     }, [])
 
-    if(!imageObj) return null;
+    if (!imageObj) return null;
     return (
         <SafeAreaView style={styles.container}>
             <ImageBackground source={imageObj} style={styles.background}>

@@ -2,18 +2,11 @@ import { Action } from 'redux';
 import { getStorageData, LAST_NEW_VIDEO } from '../../../dao/internalStorage';
 import { MyVideo } from '../../../models/VideoModel';
 import { compareDates, keyDateToDate } from '../../../resources/common';
-import {GET, UPDATE, LOGIN_NOT_READY, LOGIN_READY, SET_FEELINGS, SET_VIDEOS, SET_IS_DATA_LOADING, NEW_MESSAGE } from './types';
+import {GET, UPDATE, LOGIN_NOT_READY, LOGIN_READY, SET_FEELINGS, SET_VIDEOS, SET_IS_DATA_LOADING} from './types';
 
-export const setNewMessageStatus = (status: boolean) => {
-    return {
-        type: NEW_MESSAGE,
-        payload: status
-    }
-}
 
-export const getQuotes = (quotes: any) => {
 
-   
+export const getQuotes = (quotes: any) => {   
     return {
         type: GET,
         payload: quotes
@@ -109,27 +102,3 @@ const compareStrings = (string1: string, string2: string) => {
     return string1.toLowerCase().localeCompare(string2.toLowerCase())
 }
 
-
-// export const getJournalEntriesFromSnapshot = (snapshot) => {
-
-//     let entries = []
-//     let val = snapshot.val()
-//     //Convert the content of snapshot into an array of JournalEntry objects
-//     if(val != null){
-//         for(let key in val){
-
-//             entries.push(getEntryFromSnapshot(val[key]))
-//         }
-//     }
-    
-//     return  entries    
-
-// }
-
-
-// function getEntryFromSnapshot(obj){
-//     let newEntry = new JournalEntry(obj.date);
-    
-//     if("waterRecord" in obj){
-//         newEntry.waterRecord = new WaterRecord(obj.waterRecord.quantity)
-//     }

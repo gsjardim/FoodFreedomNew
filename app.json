@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "foodFreedomApp",
+    "name": "Food Freedom App",
     "slug": "foodfreedomRN",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -69,7 +69,10 @@
           "color": "#ffffff",
           "sounds": [
             "./assets/sounds/messageringtone.mp3"
-          ]
+          ],
+          "androidMode": "default",
+          "androidCollapsedTitle": "Food freedom app",
+          "iosDisplayInForeground": true
         }
       ]
     ]

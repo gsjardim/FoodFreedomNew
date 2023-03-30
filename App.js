@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import { Colors } from './resources/colors';
@@ -18,13 +18,6 @@ import { initializeAppData } from './dao/userDAO';
 import { GoogleWebClient } from './resources/constants';
 import report from './components/CrashReport';
 import { setSocialAuthentication } from './redux.store/actions/userActions/creators';
-import MyNotification from './models/NotificationModel';
-import { saveNotification } from './dao/notificationsDAO';
-import { setNewMessageStatus } from './redux.store/actions/generalActions/creators';
-import * as TaskManager from 'expo-task-manager';
-import { getFormattedDate } from './resources/common';
-import { registerForNotifications } from './resources/notificationHelper';
-import { NotificationsStrings } from './resources/strings';
 
 
 LogBox.ignoreLogs(['Setting a timer', 'AsyncStorage']);
@@ -39,28 +32,6 @@ Notifications.setNotificationHandler({
   })
 });
 
-const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
-
-TaskManager.defineTask(
-  BACKGROUND_NOTIFICATION_TASK,
-  ({ data, error, executionInfo }) => {
-    if (error) {
-      report.log("error occurred");
-    }
-    if (data) {
-      console.log('Notification in background received: ' + JSON.stringify(data))
-      let newNotification = new MyNotification(
-        getFormattedDate(new Date()),
-        data?.notification.data.title || 'Title',
-        data?.notification.data.message || 'Message'
-      )
-      saveNotification(newNotification).then(() => store.dispatch(setNewMessageStatus(true))).catch(err => console.log('Error saving notification ' + err));
-    }
-  }
-);
-
-Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
-
 
 export default function App() {
 
@@ -68,6 +39,7 @@ export default function App() {
     webClientId: GoogleWebClient,
   });
 
+  
   const [isReady, setIsReady] = useState(false);
   const [firstScreen, setScreen] = useState('');
   const [fontIsLoaded] = useFonts({
@@ -76,8 +48,7 @@ export default function App() {
     Verdana: require('./assets/fonts/verdana.ttf'),
   });
 
-  // const notificationListener = useRef();
-  // const responseListener = useRef();
+
   const LoginScreen = 'LoginScreen';
   const WelcomeScreen = 'Welcome';
 
@@ -87,48 +58,7 @@ export default function App() {
     SplashScreen.hideAsync();
   }
 
-  useEffect(() => {
-
-    registerForNotifications();
-      // .then(value => {
-      //   if (value) {
-          if (Platform.OS === 'android') {
-            Notifications.setNotificationChannelAsync('default', {
-              name: 'default',
-              importance: Notifications.AndroidImportance.MAX,
-              vibrationPattern: [0, 250, 250, 250],
-              lightColor: '#FF231F7C',
-
-            });
-          }
-
-          const notificationListener = Notifications.addNotificationReceivedListener(notification => {
-            console.log('Notification received: ' + JSON.stringify(notification))
-            const newNotification = new MyNotification(
-              getFormattedDate(new Date()),
-              notification.request.content.title || 'Title',
-              notification.request.content.body || 'Message'
-            )
-            if (newNotification.title !== NotificationsStrings.mealReminderTitle && newNotification.content !== NotificationsStrings.mealReminder)
-              saveNotification(newNotification).then(() => store.dispatch(setNewMessageStatus(true))).catch(err => console.log('Error saving notification ' + err));
-          });
-
-          const responseListener = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log('Response to notification: ' + JSON.stringify(response))
-          });
-
-          return () => {
-            Notifications.removeNotificationSubscription(notificationListener);
-            Notifications.removeNotificationSubscription(responseListener);
-          };
-        // }
-      // })
-      // .catch(error => report.recordError(error));
-
-
-    
-
-  }, []);
+ 
 
 
   useEffect(() => {

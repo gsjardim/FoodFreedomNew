@@ -27,6 +27,7 @@ import storage from '@react-native-firebase/storage'
 import auth from '@react-native-firebase/auth'
 import { ErrorWarning } from "../components/ErrorWarning";
 import { useToast } from "react-native-fast-toast";
+import report from "../components/CrashReport";
 // import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 
@@ -201,9 +202,9 @@ export const ProfileScreen = ({ navigation }: any) => {
                 setError(true);
                 return;
             }
-          
+
             auth().currentUser?.verifyBeforeUpdateEmail(newEmail)
-            // auth().currentUser?.updateEmail(newEmail)
+                // auth().currentUser?.updateEmail(newEmail)
                 .then(() => {
                     setUserEmail(newEmail);
                     updateUserEmail(newEmail);
@@ -211,7 +212,7 @@ export const ProfileScreen = ({ navigation }: any) => {
                 })
                 .catch(err => alert(err))
                 .finally(() => setShowChangeEmail(false))
-          
+
 
         }
 
@@ -284,23 +285,28 @@ export const ProfileScreen = ({ navigation }: any) => {
     })
 
     const selectAndSetPicture = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 4],
-            quality: 1,
-        });
+        try {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [4, 4],
+                quality: 1,
+            });
 
 
-        if (!result.cancelled) {
-            // setUserInfo({ ...userInfo, pictureUrl: result.uri });
-            setIsLoading(true);
-            let storageReference = '/images/' + currentUser?.id + '/profilePhoto.jpeg'
-            uploadImageToStorage(result.uri, storageReference, (url: any) => {
-                updateUserPictureUrl(url)
-                store.dispatch(updatePhotoUrl(url))
-                setIsLoading(false)
-            })
+            if (!result.canceled) {
+                // setUserInfo({ ...userInfo, pictureUrl: result.uri });
+                setIsLoading(true);
+                let storageReference = '/images/' + currentUser?.id + '/profilePhoto.jpeg'
+                uploadImageToStorage(result.assets[0].uri, storageReference, (url: any) => {
+                    updateUserPictureUrl(url)
+                    store.dispatch(updatePhotoUrl(url))
+                    setIsLoading(false)
+                })
+            }
+        }
+        catch (error) {
+            report.recordError(error)
         }
 
     }
@@ -324,7 +330,7 @@ export const ProfileScreen = ({ navigation }: any) => {
                 <TouchableOpacity
                     onPress={() => selectAndSetPicture()}
                 >
-                    {(pictureUrl == null || pictureUrl === '')?
+                    {(pictureUrl == null || pictureUrl === '') ?
                         <View style={[styles.profilePicture, styles.emptyPicture]}>
                             <Ionicons name='person-outline' size={PictureSize / 3} color={Colors.darkGray} />
                         </View>
@@ -374,10 +380,10 @@ export const ProfileScreen = ({ navigation }: any) => {
                     <Pressable
                         style={{ marginLeft: 20, flex: 1 }}
                         onPress={() => {
-                            
-                                if (store.getState().users.isLoggedInWithSocialAuth) alert(ProfileScreenStrings.alertForSocialSignin)
-                                else setShowChangeEmail(true)
-                            
+
+                            if (store.getState().users.isLoggedInWithSocialAuth) alert(ProfileScreenStrings.alertForSocialSignin)
+                            else setShowChangeEmail(true)
+
 
                         }}>
                         <PencilIcon width={PencilIconSize} height={PencilIconSize} />

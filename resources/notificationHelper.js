@@ -1,16 +1,32 @@
 import * as Notifications from "expo-notifications";
 import { DAILY_NOTIFICATION_ID, deleteStorageData, getStorageData, PUSH_TOKEN, storeString } from "../dao/internalStorage";
-import {  NotificationsStrings } from "./strings";
+import { NotificationsStrings } from "./strings";
 import { saveUserPushtoken } from "../dao/userDAO";
 import { Platform } from "react-native";
+import report from "../components/CrashReport";
+import auth from '@react-native-firebase/auth'
 
 const registerForNotifications = async () => {
 
-    const existingStatus = await getNotificationsPermissionCurrentStatus()
-    console.log('Register for notifications function - existing status: ' + existingStatus)
-    //if (existingStatus !== 'granted') {
-        return await requestNotificationsPermissionsAndSavePushToken()
-    //}
+   
+    try {
+        const { status: existingStatus } = await Notifications.getPermissionsAsync()        
+        if (existingStatus !== 'granted') {
+            const res = await Notifications.requestPermissionsAsync()
+            if ((Platform.OS === 'android' && res.status !== 'granted') || (Platform.OS === 'ios' && res.ios.status !== Notifications.IosAuthorizationStatus.AUTHORIZED)) {
+                deleteStorageData(PUSH_TOKEN)
+                return;
+            }
+        }
+        const token = (await Notifications.getExpoPushTokenAsync({ experienceId: '@gsjardim83/foodFreedomApp' })).data;
+        report.log(`Saving push token ${token} for user ${auth().currentUser?.uid} - ${auth().currentUser?.displayName}`);
+        storeString(PUSH_TOKEN, token)
+        saveUserPushtoken(token);
+
+    } catch (error) {
+        report.recordError( error)
+    }
+
 
 }
 
@@ -45,9 +61,11 @@ async function scheduleDailyReminder(trigger) {
         })
         .then(() => {
             Notifications.scheduleNotificationAsync({
+                
                 content: {
                     title: 'Reminder',
                     body: NotificationsStrings.dailyReminder,
+
                 },
 
                 trigger: {
@@ -55,7 +73,9 @@ async function scheduleDailyReminder(trigger) {
                     minute: trigger.minutes,
                     repeats: true,
                     channelId: 'Daily',
-                }
+                },
+                
+
             })
                 .then(identifier => storeString(DAILY_NOTIFICATION_ID, identifier));
         })
