@@ -25,12 +25,6 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import EmptyDialog from "../components/EmptyDialog";
 import { ErrorWarning } from "../components/ErrorWarning";
 import * as Crypto from 'expo-crypto';
-import * as Notifications from "expo-notifications";
-import * as Device from "expo-device";
-import MyNotification from "../models/NotificationModel";
-import { getFormattedDate } from "../resources/common";
-import { saveNotification } from "../dao/notificationsDAO";
-import { setNewMessageStatus } from "../redux.store/actions/generalActions/creators";
 import report from "../components/CrashReport";
 
 export const LOGO_SIZE = PhoneDimensions.window.width * 0.3;
@@ -42,7 +36,7 @@ export const INSTA_LOGIN = 'instagram';
 
 export const LoginScreen = ({ navigation }: any) => {
 
-    
+
     const [rememberMe, setRememberMe] = useState<boolean>(false);
     const [passwordHidden, setPasswordHidden] = useState(true);
     const [password, setPassword] = useState('');
@@ -66,7 +60,7 @@ export const LoginScreen = ({ navigation }: any) => {
             })
     }, [])
 
-    
+
 
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
         androidClientId: GoogleWebClient,
@@ -104,7 +98,7 @@ export const LoginScreen = ({ navigation }: any) => {
             return;
         }
 
-        if(!hasNotificationsPermissions()){
+        if (!hasNotificationsPermissions()) {
             alert(AlertDialogStrings.notificationsPermissions + '\nClose and start the app again.')
             return;
         }
@@ -132,7 +126,7 @@ export const LoginScreen = ({ navigation }: any) => {
 
         //Firebase Service ID:
         // host.exp.Exponent
-        if(!hasNotificationsPermissions()){
+        if (!hasNotificationsPermissions()) {
             alert(AlertDialogStrings.notificationsPermissions + '\nClose and start the app again.')
             return;
         }
@@ -140,7 +134,7 @@ export const LoginScreen = ({ navigation }: any) => {
         const nonce = Math.random().toString(36).substring(2, 10);
 
         Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, nonce)
-            .then((hashedNonce) =>{
+            .then((hashedNonce) => {
 
                 setIsDataLoading(true);
                 return AppleAuthentication.signInAsync({
@@ -154,36 +148,42 @@ export const LoginScreen = ({ navigation }: any) => {
             .then((appleCredential) => {
                 const { identityToken } = appleCredential;
 
-                const liveCredential = auth.AppleAuthProvider.credential(identityToken!,nonce);
-                signInWithOAuthCredential(liveCredential, () => navigation.navigate('Welcome'), showToast)
+                const liveCredential = auth.AppleAuthProvider.credential(identityToken!, nonce);
+                signInWithOAuthCredential(liveCredential, () => {
+                    navigation.navigate('Welcome')
+                    setIsDataLoading(false);
+                } , showToast)
             })
             .catch((error) => {
                 console.log('Error signing in with apple id: ' + JSON.stringify(error))
                 alert('Error signing in with apple id: ' + JSON.stringify(error));
             })
-            .finally(() =>  setIsDataLoading(false));
+            .finally(() => setIsDataLoading(false));
 
     }
 
     async function onGoogleButtonPress() {
-      
-        if(!hasNotificationsPermissions()){
+
+        if (!hasNotificationsPermissions()) {
             alert(AlertDialogStrings.notificationsPermissions + '\nClose and start the app again.')
             return;
         }
-         // Check if your device supports Google Play
-         setIsDataLoading(true);
-         await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-         // Get the users ID token
-         GoogleSignin.signIn().
-             then(res => {
-                 // let email = res?.user.email
-                 console.log('Google signed in successfully')
-                 let token = res.idToken
-                 let credential = auth.GoogleAuthProvider.credential(token);
-                 signInWithOAuthCredential(credential, () => navigation.navigate('Welcome'), showToast)
-             });
-        setIsDataLoading(false)
+        // Check if your device supports Google Play
+        setIsDataLoading(true);
+        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+        // Get the users ID token
+        GoogleSignin.signIn().
+            then(res => {
+                // let email = res?.user.email
+                console.log('Google signed in successfully')
+                let token = res.idToken
+                let credential = auth.GoogleAuthProvider.credential(token);
+                signInWithOAuthCredential(credential, () => {
+                    navigation.navigate('Welcome')
+                    setIsDataLoading(false);
+                } , showToast)
+            })
+
 
     }
 
@@ -197,7 +197,7 @@ export const LoginScreen = ({ navigation }: any) => {
         const buttonWidth = PhoneDimensions.window.width * 0.32;
 
         const onSave = () => {
-           
+
             setError(false);
 
             if (newEmail === '') {

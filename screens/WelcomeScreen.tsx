@@ -113,6 +113,7 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
         return unsubscribe;
     }, [])
 
+    let firstName = userName.includes(' ') ? userName.split(' ')[0] : userName
     if (!imageObj) return null;
     return (
         <SafeAreaView style={styles.container}>
@@ -120,7 +121,7 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
                 <View style={[styles.headerView, styles.viewCommon]}>
                     {(userPhoto != null) && <Image source={userPhoto} style={styles.userImage} />}
 
-                    <Text style={styles.welcomeText}>{WelcomeScreenStrings.welcomeText + ' ' + userName + '!'}</Text>
+                    <Text style={styles.welcomeText}>{WelcomeScreenStrings.welcomeText + ' ' + firstName + '!'}</Text>
 
                 </View>
 

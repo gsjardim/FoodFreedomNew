@@ -38,7 +38,6 @@ export const DiaryInputScreen = ({ route, navigation }: any) => {
     const [diaryText, setDiaryText] = useState(initialText);
     const [isInputFocused, setInputFocused] = useState(false)
 
-
     const onSave = () => {
         //If there is no change it simply closes the screen.
         if (initialText === diaryText) {
@@ -82,40 +81,38 @@ export const DiaryInputScreen = ({ route, navigation }: any) => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <ScrollView>
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                    style={styles.container}
-                >
-                    <View style={styles.headerView}>
-                        <Text style={styles.headerText}>My Diary</Text>
-                        <Text style={styles.date}>{keyDateToStringDate(currentDate)}</Text>
-                    </View>
+            <KeyboardAvoidingView
+                behavior={'height'}
+                style={styles.container}
+                onTouchEnd={() => { setInputFocused(!isInputFocused) }}
+            >
+                <View style={styles.headerView}>
+                    <Text style={styles.headerText}>My Diary</Text>
+                    <Text style={styles.date}>{keyDateToStringDate(currentDate)}</Text>
+                </View>
 
-                    <View style={{ flex: 1 }} />
+                <View style={{ flex: 1 }} />
 
-                    <TextInput
-                        onTouchEnd={() => { if (Platform.OS === 'ios') setInputFocused(!isInputFocused) }}
-                        style={styles.input}
-                        multiline={true}
-                        scrollEnabled={true}
-                        placeholder={"Dear diary..."}
-                        numberOfLines={200}
-                        textAlignVertical={"top"}
-                        onChangeText={(value) => { setDiaryText(value) }}
-                        value={diaryText}
-                    />
+                <TextInput
+                    // onTouchEnd={() => { if (Platform.OS === 'ios') setInputFocused(!isInputFocused) }}
+                    style={[styles.input, {fontSize : Platform.OS === 'ios' ? FontSizes.medium_1 : FontSizes.small_2}]}
+                    multiline={true}
+                    scrollEnabled={true}
+                    placeholder={"Dear diary..."}
+                    textAlignVertical={"top"}
+                    onChangeText={(value) => { setDiaryText(value) }}
+                    value={diaryText}
+                />
 
-                    <View style={{ flex: 1 }} />
+                <View style={{ flex: 1 }} />
 
-                    <CustomButton
-                        label={ActivitiesStrings.saveButton}
-                        roundCorners={true}
-                        onPress={onSave}
-                        width={PhoneDimensions.window.width - (2 * DefaultPadding)}
-                    />
-                </KeyboardAvoidingView>
-            </ScrollView>
+                <CustomButton
+                    label={ActivitiesStrings.saveButton}
+                    roundCorners={true}
+                    onPress={onSave}
+                    width={PhoneDimensions.window.width - (2 * DefaultPadding)}
+                />
+            </KeyboardAvoidingView>
         </SafeAreaView>
     )
 }
@@ -150,7 +147,6 @@ const styles = StyleSheet.create({
         fontFamily: FontFamilies.Poppins,
         textAlign: 'center',
     },
-
     input: {
         width: '100%',
         backgroundColor: Colors.opaqueWhite,
@@ -163,6 +159,7 @@ const styles = StyleSheet.create({
         fontSize: FontSizes.small_2,
         color: Colors.darkGray,
         fontFamily: FontFamilies.Verdana,
-        minHeight: PhoneDimensions.window.height * 0.4
+        minHeight: PhoneDimensions.window.height * 0.3,
+        maxHeight: PhoneDimensions.window.height * 0.5,
     }
 })
