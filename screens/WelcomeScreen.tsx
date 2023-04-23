@@ -30,7 +30,9 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
     const [quoteContent, setQuoteContent] = useState('')
 
     useEffect(() => {
-
+        /**
+         * This useEffect deals with requesting permissions to send notifications to the user.
+         */
         registerForNotifications();
 
         if (Platform.OS === 'android') {
@@ -48,7 +50,6 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
             const isMealReminderNotification = (newNotification: MyNotification) => {
                 return newNotification.title == NotificationsStrings.mealReminderTitle && newNotification.content == NotificationsStrings.mealReminder
             }
-            console.log('Response to notification: ' + JSON.stringify(data))
             let newNotification = new MyNotification(
                 getFormattedDate(new Date()),
                 data?.notification.request.content.title || 'Title',

@@ -115,7 +115,6 @@ const HistoryEntry = (props: EntryProps) => {
                     text: ButtonStrings.editButton,
                     style: 'default',
                     onPress: () => {
-                        console.log('You pressed edit ' + activity)
                         props.navigation.navigate(activity, { currentDate: date, entry: entry })
                     }
                 },
@@ -134,7 +133,7 @@ const HistoryEntry = (props: EntryProps) => {
         )
     }
 
-
+    if(entry.isEmpty()) return null;
     return (
         <View>
             {!isExpanded ? <TouchableOpacity
@@ -286,7 +285,7 @@ const HistoryEntry = (props: EntryProps) => {
                         </View>
                     }
 
-                    {(entry.diaryRecord != null) &&
+                    {(entry.diaryRecord != null && entry.diaryRecord.text !== '') &&
                         <View style={{ marginTop: PhoneDimensions.window.height * 0.02 }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Text style={styles.subTitlesText}>My diary:</Text>

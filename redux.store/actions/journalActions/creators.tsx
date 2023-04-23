@@ -34,7 +34,6 @@ export const setDiaryJournalEntries = (entries: JournalEntry[]) => {
 }
 
 export const updateDiaryJournalEntry = (entry: JournalEntry) => {
-    console.log('JournalActions/creators - updateDiaryJournalEntry called')
     return {
         type: UPDATE_DIARY,
         payload: entry

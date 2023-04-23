@@ -101,13 +101,16 @@ const FeelingsWheel = ({ showModal, onSelect, onCancel, selectedFeeling }: Wheel
         setGraphicData(defaultGraphicData);
         setDataArray(FeelingsMap);
         setGraphicColorArray(graphicColor);
-        setSelection('');
+        // setSelection('');
         setCurrentLevel(1);
         setParentFeeling([]);
     }
 
     const onGoUpLevel = () => {
-        if (currentLevel == 2) {
+        if(currentLevel == 1){
+            setSelection('');
+        }
+        else if (currentLevel == 2) {
             setGraphicColorArray(graphicColor);
             setGraphicData(defaultGraphicData)
             setDataArray(FeelingsMap);
@@ -150,9 +153,9 @@ const FeelingsWheel = ({ showModal, onSelect, onCancel, selectedFeeling }: Wheel
                                 style={[GeneralTextStyle, { fontSize: FontSizes.medium_1, color: Colors.primaryColor }]}>
                                 {ActivitiesStrings.wheelSelected + selection}
                             </Text>
-                            <Pressable onPress={() => setSelection('')}>
+                            {/* <Pressable onPress={() => setSelection('')}>
                                 <Ionicons name="close-circle-outline" size={PhoneDimensions.window.width / 15} color={Colors.exerciseCircle} style={{ marginLeft: 10 }} />
-                            </Pressable>
+                            </Pressable> */}
                         </View>}
                 </View>
 
@@ -212,7 +215,7 @@ const FeelingsWheel = ({ showModal, onSelect, onCancel, selectedFeeling }: Wheel
                         labelSize={FontSizes.small_2 * 0.9}
                     />
                     <CustomButton
-                        label={ActivitiesStrings.goUpButton}
+                        label={ActivitiesStrings.goBackButton}
                         roundCorners={true}
                         onPress={onGoUpLevel}
                         width={ButtonsWidth}
@@ -247,6 +250,7 @@ const styles = StyleSheet.create({
     selectionView: {
         width: '100%',
         alignItems: 'center',
+        marginTop: PhoneDimensions.window.height * 0.04
     },
 
     buttonsView: {

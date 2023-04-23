@@ -3,6 +3,7 @@ import { getStorageData, LAST_NEW_VIDEO } from '../../../dao/internalStorage';
 import { MyVideo } from '../../../models/VideoModel';
 import { compareDates, keyDateToDate } from '../../../resources/common';
 import {GET, UPDATE, LOGIN_NOT_READY, LOGIN_READY, SET_FEELINGS, SET_VIDEOS, SET_IS_DATA_LOADING} from './types';
+import report from '../../../components/CrashReport';
 
 
 
@@ -87,7 +88,7 @@ export const setVideos = (snapshot: any) => {
 
         })
         .catch(error => {
-            console.log('Creators - Set videos: error setting up videos - ' + error)
+            report.log('Creators - Set videos: error setting up videos - ' + error)
         })
       
     }

@@ -1,20 +1,19 @@
 import React from 'react'
-import { Image, Text, View, StyleSheet, Pressable, PlatformColor, Platform, } from "react-native";
+import { Text, View, StyleSheet, Pressable,  Platform, } from "react-native";
 import { useState } from "react";
 import { CustomButton } from "../components/CustomButton";
 import { Colors } from "../resources/colors";
 import { DefaultPadding, FontFamilies, FontSizes, StatusBarHeight, ToastDuration } from "../resources/constants";
 import PhoneDimensions from "../resources/layout";
 import { ActivitiesStrings } from "../resources/strings";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
-import { sadFace, fairFace, happyFace } from "../resources/imageObj";
+import {  TextInput } from "react-native-gesture-handler";
 import Ionicons from '@expo/vector-icons/Ionicons'
 import CustomDropDown from "../components/CustomDropdown";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import FaceSelector from "../components/FaceSelector";
 import { getJournalEntryByDate, saveJournalEntry } from "../dao/journalEntryDAO";
-import { keyDateToStringDate, stringDateToKeyDate } from "../resources/common";
+import { keyDateToStringDate } from "../resources/common";
 import { JournalEntry, SleepRecord } from "../models/JournalEntryModel";
 import store from "../redux.store/configureStore";
 import { useToast } from "react-native-fast-toast";
@@ -81,11 +80,9 @@ const SleepScreen = ({ route, navigation }: any) => {
 
     return (
         <KeyboardAwareScrollView
-            // style={styles.container}
             contentContainerStyle={[styles.container,{paddingBottom: Platform.OS === 'ios' ? insets.bottom + DefaultPadding : DefaultPadding}]}
-        // behavior={"padding"}
+    
         >
-            {/* <ScrollView   contentContainerStyle={styles.container}> */}
             <CustomDropDown
                 showModal={isDropdownVisible}
                 onSelect={onSelectHoursOfSleep}
@@ -140,7 +137,6 @@ const SleepScreen = ({ route, navigation }: any) => {
                     width={PhoneDimensions.window.width * 0.35}
                 />
             </View>
-            {/* </ScrollView> */}
         </KeyboardAwareScrollView>
     )
 }

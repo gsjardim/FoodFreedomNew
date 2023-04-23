@@ -1,3 +1,5 @@
+import store from "../redux.store/configureStore";
+
 export const ButtonStrings = {
     saveButton: 'Save',
     cancelButton: 'Cancel',
@@ -50,8 +52,10 @@ export const SettingsScreenStrings = {
     title: 'Notifications',
     turnOffSettings: 'To turn notifications ON / OFF please open your device\'s settings',
     mealReminder: 'Show after meal reminder in:',
+    waterReminder: 'Remind me to drink water at:',
     dailyReminder: 'Notify me to open my journal at:',
     saveClose: 'Save and close',
+    saveConfirmation: 'Settings saved',
 };
 
 export const ResourcesScreenStrings = {
@@ -69,7 +73,7 @@ export const ActivitiesStrings = {
     deleteButton: ButtonStrings.deleteButton,
     editButton: 'Edit',
     addButton: 'Add',
-    goUpButton: 'Go Up',
+    goBackButton: 'Go back',
 
     //Food mood journal
     fmTitle: 'Food Mood Journal',
@@ -174,6 +178,7 @@ export const NotificationsStrings = {
     dailyReminder: "Have you recorded your journal entries today?",
     mealReminder: 'Finish entering your meal record.',
     mealReminderTitle: 'Reminder',
+    waterReminder: `Hi ${store.getState().users.currentUser?.name},\nThis is your friendly reminder to drink water!`,
 }
 
 

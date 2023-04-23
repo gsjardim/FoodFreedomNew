@@ -10,6 +10,8 @@ export const LAST_NEW_VIDEO = '@last_new_video'
 export const SETTINGS = '@settings'
 export const PUSH_TOKEN = "@pushToken"
 export const DAILY_NOTIFICATION_ID = '@notificationId'
+export const MORNING_NOTIFICATION_ID = '@morningNotificationId'
+export const EVENING_NOTIFICATION_ID = '@eveningNotificationId'
 export const NOTIFICATIONS = '@internalNotifications'
 
 export const storeString = async (storageKey, value) => {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import React from 'react';
 import { Keyboard, View, Text, StyleSheet, Platform, KeyboardAvoidingView } from "react-native";
 import { useToast } from "react-native-fast-toast";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
+import { TextInput } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CustomButton } from "../components/CustomButton";
 import { getDiaryEntryByDate, saveJournalEntry } from "../dao/journalEntryDAO";
@@ -59,7 +59,6 @@ export const DiaryInputScreen = ({ route, navigation }: any) => {
 
         //save new entry if not found
         else {
-            console.log('Saving new diary entry...')
             targetEntry = new JournalEntry(dbDate)
             targetEntry.setDiaryRecord(diaryRecord);
             let diaryEntries = [...store.getState().journalEntries.diaryEntries, targetEntry];

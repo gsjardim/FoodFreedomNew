@@ -1,30 +1,30 @@
 import React from 'react'
-import { ActivityIndicator, View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Colors } from '../resources/colors';
 import { Video, AVPlaybackStatus, ResizeMode } from 'expo-av';
 import { useRef, useState } from "react";
 import PhoneDimensions from "../resources/layout";
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { GeneralTextStyle } from "../resources/constants";
+import report from '../components/CrashReport';
 
 export const VideoScreen = ({ route, navigation }: any) => {
 
     let url = route.params.videoUrl;
     let description = route.params.videoDesc;
     const video = useRef<Video>(null);
-    const [status, setStatus] = useState<AVPlaybackStatus>();
-    const [showTitle, setShowTitle] = useState(true);
-    // const [playbackInstanceInfo, setPlaybackInstanceInfo] = useState<AVPlaybackStatus>({});
+    // const [status, setStatus] = useState<AVPlaybackStatus>();
+    // const [showTitle, setShowTitle] = useState(true);
 
-    const updatePlaybackCallback = (status: any) => {
-        if(status.isLoaded){
-            setShowTitle(false);
-        }
-        if(status.didJustFinish){
-            setShowTitle(true);
-        }
+    // const updatePlaybackCallback = (status: any) => {
+    //     if(status.isLoaded){
+    //         setShowTitle(false);
+    //     }
+    //     if(status.didJustFinish){
+    //         setShowTitle(true);
+    //     }
 
-    }
+    // }
 
     return (
         <View style={styles.container}>
@@ -47,7 +47,7 @@ export const VideoScreen = ({ route, navigation }: any) => {
                 useNativeControls={true}
                 resizeMode={ResizeMode.CONTAIN}
                 // onPlaybackStatusUpdate={updatePlaybackCallback}
-                onError={(error) => console.log(error)}
+                onError={(error) => report.log(error)}
                 volume={0.9}
                 isMuted={false}
             />

@@ -65,17 +65,6 @@ const CustomDrawerContent = (props: any) => {
         deleteStorageData(FB_TOKEN)
 
         store.dispatch(setSocialAuthentication(false));
-        // const token = await getStorageData(OAUTH_TOKEN) || '';
-        // console.log('Handle logout oauth credentials - ' + token)
-        // if (token !== '') {
-        //     try {
-        //         let success = await AuthSession.revokeAsync({ token: token }, discovery);
-        //         console.log('DrawerNavigation handle apple logout ' + success)
-        //         deleteStorageData(OAUTH_TOKEN);
-        //     } catch (e: any) {
-        //         console.log(`Failed to revoke token: ${e.message}`);
-        //     }
-        // }
     };
 
     const handlePressDrawerItem = (label: string) => {

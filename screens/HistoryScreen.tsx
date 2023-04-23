@@ -1,24 +1,22 @@
 import { useEffect, useState } from "react";
 import React from 'react';
-import { View, Text, StyleSheet, Modal, Pressable, Image, Platform, TouchableOpacity } from "react-native";
-import { FlatList, TextInput } from "react-native-gesture-handler";
+import { View, Text, StyleSheet, Modal, Pressable, Image, Platform } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CustomButton } from "../components/CustomButton";
 import { Colors } from '../resources/colors';
 import { DefaultPadding, FontFamilies, FontSizes, RATE_FAIR, RATE_HAPPY, RATE_SAD } from "../resources/constants";
 import Ionicons from '@expo/vector-icons/Ionicons'
 import PhoneDimensions from "../resources/layout";
-import { compareDates, dateToKeyDate, getFormattedDate, getStandardFormatDate, keyDateToDate, keyDateToStringDate } from "../resources/common";
+import { compareDates, dateToKeyDate, getFormattedDate, keyDateToDate } from "../resources/common";
 import { RoundCheckbox } from "../components/RoundCheckbox";
-import { diary, exerciseJournal, fairFace, fairFaceSelected, foodMoodJournal, happyFace, happyFaceSelected, sadFace, sadFaceSelected, sleepJournal, waterJournal } from "../resources/imageObj";
+import { fairFaceSelected, happyFaceSelected, sadFaceSelected } from "../resources/imageObj";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { FoodMoodJournal, JournalEntry } from "../models/JournalEntryModel";
+import { JournalEntry } from "../models/JournalEntryModel";
 import store from "../redux.store/configureStore";
 import HistoryEntry from "../components/HistoryEntry";
 import { queryJournalEntriesByDateInterval } from "../dao/journalEntryDAO";
-import { getJournalEntries, setHistoryJournalEntries } from "../redux.store/actions/journalActions/creators";
-import { useLinkProps } from "@react-navigation/native";
-import { useFocusEffect } from '@react-navigation/native';
+import { setHistoryJournalEntries } from "../redux.store/actions/journalActions/creators";
 import { ButtonStrings } from "../resources/strings";
 
 const IconSize = PhoneDimensions.window.width * 0.08;
@@ -111,7 +109,6 @@ export const HistoryScreen = ({ navigation }: any) => {
             const filterResults = (data: JournalEntry[]) => {
                 onSearch(filterByDateAndRate(data), { startDate: fromDate, endDate: toDate })
             }
-            console.log('From: ' + fromDate.toLocaleDateString() + ' to: ' + toDate.toLocaleDateString())
             queryJournalEntriesByDateInterval(dateToKeyDate(fromDate), dateToKeyDate(toDate), filterResults)
 
         }

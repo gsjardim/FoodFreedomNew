@@ -112,7 +112,7 @@ class JournalEntry {
     }
 
     isEmpty(){
-        return (this.foodMoodRecords == null || this.foodMoodRecords.length == 0) && (this.exerciseRecords == null || this.exerciseRecords.length == 0) && this.waterRecord == null && this.sleepRecord == null && this.diaryRecord == null;
+        return (this.foodMoodRecords == null || this.foodMoodRecords.length == 0) && (this.exerciseRecords == null || this.exerciseRecords.length == 0) && this.waterRecord == null && this.sleepRecord == null && (this.diaryRecord == null || this.diaryRecord.text === '');
     }
 
     setWaterQuantity(quantity: number){

@@ -12,7 +12,9 @@ export default class UserModel {
 
     toString(){
         
-        console.log(`Id: ${this.id}\nName: ${this.name}\nEmail: ${this.email}\nDate of birth: ${this.yearOfBirth}\nCreated date: ${this.createdDate}\nLast Journal entry: ${this.lastJournalEntry}\nPicture url: ${this.pictureUrl}`)
+        let str = `Id: ${this.id}\nName: ${this.name}\nEmail: ${this.email}\nDate of birth: ${this.yearOfBirth}\nCreated date: ${this.createdDate}\nLast Journal entry: ${this.lastJournalEntry}\nPicture url: ${this.pictureUrl}`
+        return str
+
     }
    
 }

@@ -1,4 +1,5 @@
 import database from '@react-native-firebase/database'
+import report from '../components/CrashReport';
 export const USERS_REF = 'Users';
 export const QUOTES_REF = 'Quotes';
 export const JOURNAL_REF = 'Journal';
@@ -18,7 +19,7 @@ export const setValueToDatabase = async (reference, value, callback) => {
             callback()
         }
     })
-    .catch((error) => console.log('Error updating database (@databaseCommon/setValueToDatabase) - ' + error))
+    .catch((error) => report.recordError(error))
 }
 
 export const getValueFromDatabase = async (ref) => {

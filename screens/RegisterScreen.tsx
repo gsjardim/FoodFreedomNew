@@ -1,27 +1,24 @@
 import { useState } from "react";
 import React from 'react'
 import { Image, View, Text, StyleSheet, Pressable, Alert, Platform } from "react-native";
-import { Directions, ScrollView, TextInput } from "react-native-gesture-handler";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CustomButton } from "../components/CustomButton";
 import { RoundCheckbox } from "../components/RoundCheckbox";
 import { Colors } from '../resources/colors';
-import { DefaultPadding, FontFamilies, FontSizes, Genders, GeneralTextStyle, MINIMUM_AGE, neutralMenuOption, PRIVACY_URL, TERMS_URL, ToastDuration, validationRegex } from "../resources/constants";
+import { FontFamilies, FontSizes, Genders, GeneralTextStyle, MINIMUM_AGE, neutralMenuOption, PRIVACY_URL, TERMS_URL, ToastDuration, validationRegex } from "../resources/constants";
 import { FF_logo } from "../resources/imageObj";
 import PhoneDimensions from "../resources/layout";
 import { LoginRegisterScreenStrings } from "../resources/strings";
 import { checkMarkSize } from "./FoodMoodScreen";
 import Ionicons from '@expo/vector-icons/Ionicons'
-import { LOGO_SIZE, styles as loginStyles } from "./LoginScreen";
-import { getFormattedDate, getStandardFormatDate, openUrlInBrowser, } from "../resources/common";
+import { styles as loginStyles } from "./LoginScreen";
+import { getFormattedDate, openUrlInBrowser, } from "../resources/common";
 import CustomDropDown from "../components/CustomDropdown";
 import { useToast } from "react-native-fast-toast";
 import database from '@react-native-firebase/database'
-import storage from '@react-native-firebase/storage'
 import auth from '@react-native-firebase/auth'
 import UserModel from "../models/UserModel";
-import { JOURNAL_REF } from "../dao/databaseCommon";
 import { ErrorWarning } from "../components/ErrorWarning";
 
 const YEAR_MODE = 1;
@@ -319,7 +316,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        // marginBottom: PhoneDimensions.window.width * 0.04,
         paddingHorizontal: 8,
     },
 
@@ -327,8 +323,6 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'flex-start',
-        //  borderWidth: 1,
-        // borderColor: 'black',
     },
 
     buttonsView: {

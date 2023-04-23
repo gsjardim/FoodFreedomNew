@@ -1,4 +1,5 @@
 import { Linking } from "react-native";
+import report from "../components/CrashReport";
 
 
 const openUrlInBrowser = (url) => {
@@ -7,7 +8,7 @@ const openUrlInBrowser = (url) => {
         if (supported) {
             Linking.openURL(url);
         } else {
-            console.log("Don't know how to open URI: " + url);
+            report.log("Don't know how to open URI: " + url);
         }
     });
 }
@@ -75,20 +76,14 @@ const keyDateToDate = (keyDate) => {
 
 //converts date string (MMM dd yyyy) to a date object
 const stringToDate = (dateStr) => {
-    // console.log('String to date function - param: ' + dateStr)
     let convertedDate = new Date();
     let dateArray = dateStr.split(' ');
     let year = parseInt(dateArray[2]);
     let day = parseInt(dateArray[1]);
     let month = getMonthNumber(dateArray[0]);
-    // console.log('String to date function - day: ' + day)
-    // console.log('String to date function - month: ' + month)
-    // console.log('String to date function - year: ' + year)
     convertedDate.setFullYear(year);
     convertedDate.setMonth(month);
     convertedDate.setDate(day);
-
-    // console.log('String to date function - result: ' + convertedDate)
     return convertedDate;
 }
 

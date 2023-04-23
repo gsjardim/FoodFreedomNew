@@ -86,6 +86,5 @@ const styles = StyleSheet.create({
     thumbnail: {
         width: ThumbnailWidth,
         height: ThumbnailWidth * 0.75,
-        // resizeMode: "contain",
     }
 })

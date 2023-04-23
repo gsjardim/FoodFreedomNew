@@ -1,39 +1,30 @@
 import { useEffect, useState } from "react";
 import React from 'react'
 import { View, Text, StyleSheet, Image, Pressable, ActivityIndicator } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { CustomButton } from "../components/CustomButton";
 import { Colors } from '../resources/colors';
-import { DefaultPadding, emailValidationRegex, FontFamilies, FontSizes, GeneralTextStyle, PencilIconSize, ToastDuration, validationRegex } from "../resources/constants";
+import { DefaultPadding, FontFamilies, FontSizes, GeneralTextStyle, PencilIconSize, ToastDuration, validationRegex } from "../resources/constants";
 import Ionicons from '@expo/vector-icons/Ionicons'
 import PhoneDimensions from "../resources/layout";
 import { ActivitiesStrings, ButtonStrings, LoginRegisterScreenStrings, ProfileScreenStrings } from "../resources/strings";
-import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import {  TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import OverlayTextInput from "../components/OverlayTextInput";
 import * as ImagePicker from 'expo-image-picker';
 import store from "../redux.store/configureStore";
 import UserModel from "../models/UserModel";
-import ImageResizer from 'react-native-image-resizer';
-import { downloadImageFromStorage, uploadImageToStorage } from "../dao/storageDAO";
+import {  uploadImageToStorage } from "../dao/storageDAO";
 import { updateUserEmail, updateUserName, updateUserPictureUrl } from "../dao/userDAO";
 import { updatePhotoUrl } from "../redux.store/actions/userActions/creators";
 import { keyDateToStringDate } from "../resources/common";
 import { PencilIcon } from "../components/Pencil_Icon";
-import ActivityIndicatorOverlay from "../components/OverlayActivityIndicator";
 import EmptyDialog from "../components/EmptyDialog";
-import database from '@react-native-firebase/database'
-import storage from '@react-native-firebase/storage'
 import auth from '@react-native-firebase/auth'
 import { ErrorWarning } from "../components/ErrorWarning";
 import { useToast } from "react-native-fast-toast";
 import report from "../components/CrashReport";
-// import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 
-
-// import ImagePicker from 'react-native-image-crop-picker';
-//Important: read additional setup to be done at https://www.npmjs.com/package/react-native-image-crop-picker
 
 
 export const PictureSize = PhoneDimensions.window.width * 0.35;

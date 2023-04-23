@@ -2,12 +2,10 @@ import { Alert } from "react-native";
 import database from '@react-native-firebase/database'
 import storage from '@react-native-firebase/storage'
 import auth from '@react-native-firebase/auth'
-import { JournalEntry } from "../models/JournalEntryModel";
 import UserModel from "../models/UserModel";
-import { loginUser, setSocialAuthentication, updateStoreUserEmail, updateStoreUserName, updateUser } from "../redux.store/actions/userActions/creators";
+import { loginUser, setSocialAuthentication, updateStoreUserEmail, updateStoreUserName } from "../redux.store/actions/userActions/creators";
 import store from "../redux.store/configureStore";
-import { FEELINGS_REF, getValueFromDatabase, JOURNAL_REF, QUOTES_REF, setValueToDatabase, TOKENS_REF, USERS_REF, VIDEOS_REF } from "./databaseCommon";
-import { FB_TOKEN, OAUTH_TOKEN, storeJSON, storeString } from "./internalStorage";
+import { FEELINGS_REF, QUOTES_REF, setValueToDatabase, USERS_REF, VIDEOS_REF } from "./databaseCommon";
 import { setUpCachedJournalEntries } from "./journalEntryDAO";
 import { getQuotes, setFeelings, setIsDataLoading, setVideos } from "../redux.store/actions/generalActions/creators";
 import { getFormattedDate } from "../resources/common";
@@ -17,33 +15,6 @@ export const saveUserPushtoken = (token) => {
     const uid = store.getState().users.currentUser.id;
     const ref = USERS_REF + '/' + uid + '/pushToken';
     setValueToDatabase(ref, token, null);
-    database().ref(TOKENS_REF).once('value', snapshot => {
-        let tokens = snapshot.val()
-        if (tokens != null) {
-            let index = tokens.findIndex(obj => obj?.uid === uid)
-            if (index > -1) {
-                tokens[index] = {
-                    uid: uid,
-                    token: token
-                }
-            }
-            else {
-                tokens.push({
-                    uid: uid,
-                    token: token
-                })
-            }
-
-        }
-        else {
-            tokens = new Array()
-            tokens.push({
-                uid: uid,
-                token: token
-            })
-        }
-        setValueToDatabase(TOKENS_REF, tokens)
-    })
 }
 
 export async function updateUserPictureUrl(pictureUrl) {
@@ -56,16 +27,16 @@ export const getUserPhotoURL = async () => {
 
     const currentUser = store.getState().users.currentUser
 
-    console.log('Get user photo URL was called with: ' + currentUser.pictureUrl)
     const url = await storage()
         .ref('/' + currentUser.pictureUrl)
         .getDownloadURL()
         .then((url) => {
-            console.log('getUserPhotoURL: ' + url)
             return url
         })
-        .catch(error => { return '' })
-    console.log('getUserPhotoURL - returned URL: ' + url)
+        .catch(error => {
+            report.recordError(error)
+            return ''
+        })
     return url;
 }
 
@@ -86,7 +57,6 @@ export const loginWithEmailAndPassword = (email, password, onSuccessCallBack, on
     auth().signInWithEmailAndPassword(email, password)
         .then(value => {
             let fbUser = value.user
-            console.log('Authenticated user - ' + JSON.stringify(fbUser))
             if (fbUser != null && fbUser.emailVerified) {
                 initializeAppData(fbUser, onSuccessCallBack);
 
@@ -108,7 +78,6 @@ export const loginWithEmailAndPassword = (email, password, onSuccessCallBack, on
                             onPress: () => {
                                 if (fbUser != null) {
                                     fbUser.sendEmailVerification();
-                                    console.log('Verification link sent to ' + fbUser.email)
                                     onFailCallBack('Verification link sent to ' + fbUser.email);
                                 }
                             }
@@ -132,7 +101,6 @@ export const signInWithOAuthCredential = (credential, onSuccessCallBack, onFailC
 
             let fbUser = res.user;
             if (fbUser != null) {
-                console.log('Authenticated user - ' + JSON.stringify(fbUser))
                 let uid = fbUser.uid;
                 const ref = USERS_REF + '/' + uid;
                 store.dispatch(setSocialAuthentication(true));
@@ -153,9 +121,9 @@ export const signInWithOAuthCredential = (credential, onSuccessCallBack, onFailC
                             .catch(error => onFail('Error creating new user from Google sign in: ' + error, onFailCallBack));
                     }
                 })
-                .catch(err => {
-                    onFailCallBack('Failed to login - ' + err)
-                })
+                    .catch(err => {
+                        onFailCallBack('Failed to login - ' + err)
+                    })
             }
             else {
                 onFail('Error creating new user from Google sign in: firebase user is null', onFailCallBack);
@@ -181,41 +149,33 @@ export const initializeAppData = (fbUser, callback) => {
         store.dispatch(loginUser(snapshot));
         store.dispatch(setIsDataLoading(false))
     })
-    .then(() => {
-        //Loads quotes into app
-        database().ref(QUOTES_REF).once('value', snapshot => {
-            store.dispatch(getQuotes(snapshot.val()))
-        }, _error => {
-            store.dispatch(getQuotes([{ category: 'general', content: 'Welcome to the Food Freedom App!' }]))
+        .then(() => {
+            //Loads quotes into app
+            database().ref(QUOTES_REF).once('value', snapshot => {
+                store.dispatch(getQuotes(snapshot.val()))
+            }, _error => {
+                store.dispatch(getQuotes([{ category: 'general', content: 'Welcome to the Food Freedom App!' }]))
+            })
         })
-    })
-    .then(() => {
-        //Loads last 30 days of journal entries onto memory
-        setUpCachedJournalEntries(fbUser)
-    })
-    .then(() => {
-        //Loads videos
-        database().ref(VIDEOS_REF).on('value', snapshot => {
-            // console.log('Snapshot of videos in userDao - ' + JSON.stringify(snapshot.val()))
-            store.dispatch(setVideos(snapshot.val()))
+        .then(() => {
+            //Loads last 30 days of journal entries onto memory
+            setUpCachedJournalEntries(fbUser)
         })
-    })
-    .then(() => {
-        //Loads feelings that can be selected in the food mood journal
-        database().ref(FEELINGS_REF).on('value', snapshot => {
-
-            store.dispatch(setFeelings(snapshot.val()))
+        .then(() => {
+            //Loads videos
+            database().ref(VIDEOS_REF).on('value', snapshot => {
+                store.dispatch(setVideos(snapshot.val()))
+            })
         })
-        callback(); //Calls the onSuccess callback function - Go to welcome screen
-    })
-    .catch(error => report.recordError(error))
+        .then(() => {
+            //Loads feelings that can be selected in the food mood journal
+            database().ref(FEELINGS_REF).on('value', snapshot => {
 
-
-
-
-
-
-
+                store.dispatch(setFeelings(snapshot.val()))
+            })
+            callback(); //Calls the onSuccess callback function - Go to welcome screen
+        })
+        .catch(error => report.recordError(error))
 
 }
 

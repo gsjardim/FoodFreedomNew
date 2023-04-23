@@ -13,10 +13,9 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { sadFaceSelected, fairFaceSelected, happyFaceSelected, minusButton, plusButton } from "../resources/imageObj";
 import { RoundCheckbox } from "../components/RoundCheckbox";
-import { compareDates, get12hourFormatTime, keyDateToDate, keyDateToStringDate, stringDateToKeyDate, stringTimeToKeyTime, stringToDate, stringToTime } from "../resources/common";
+import { compareDates, get12hourFormatTime, keyDateToDate, keyDateToStringDate,  stringTimeToKeyTime, stringToTime } from "../resources/common";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
-import { physicalFeelings, mentalFeelings } from "../resources/constants";
 import { FoodMoodJournal } from "../models/JournalEntryModel";
 import { PHYSICAL_BEFORE, PHYSICAL_AFTER, MENTAL_BEFORE, MENTAL_AFTER, EMONTIONAL_BEFORE, EMOTIONAL_AFTER, neutralMenuOption } from "../resources/constants";
 import FeelingsWheel from "../components/FeelingsWheel";
@@ -25,14 +24,13 @@ import store from "../redux.store/configureStore";
 import { JournalEntry } from "../models/JournalEntryModel";
 import { getJournalEntryByDate, saveJournalEntry, setJournalEntryPictureUrl } from "../dao/journalEntryDAO";
 import { useToast } from "react-native-fast-toast";
-import { deleteImageFromStorageByUrl, downloadImageFromStorage, uploadImageToStorage } from "../dao/storageDAO";
+import { deleteImageFromStorageByUrl, uploadImageToStorage } from "../dao/storageDAO";
 import UserModel from "../models/UserModel";
 import { JOURNAL_REF } from "../dao/databaseCommon";
 import { updateHistoryJournalEntries } from "../redux.store/actions/journalActions/creators";
 import * as Notifications from "expo-notifications";
 import { getStorageData, SETTINGS } from "../dao/internalStorage";
 import EmptyDialog from "../components/EmptyDialog";
-import { getNotificationsPermissionCurrentStatus, requestNotificationsPermissionsAndSavePushToken } from "../resources/notificationHelper";
 import report from "../components/CrashReport";
 
 //Here is the intended flow:
@@ -199,7 +197,6 @@ const FoodMoodScreen = ({ route, navigation }: any) => {
 
             for (let fmj of fmjArray) {
                 if (fmj.pictureUri !== '' && !fmj.pictureUri?.includes('http')) {
-                    console.log('FoodMoodScreen - Saving image to storage')
                     let dbTime = stringTimeToKeyTime(fmj.time, fmj.date)
                     let imageStoragePath = storageReference + dbDate + '_' + dbTime + '.jpeg'
                     const ref = JOURNAL_REF + '/' + currentUser.id + '/' + dbDate + '/foodMoodRecords/' + fmjArray.indexOf(fmj).toString() + '/pictureUri';
@@ -211,7 +208,6 @@ const FoodMoodScreen = ({ route, navigation }: any) => {
 
         for (let img of deleteImages) {
             if (img.includes('http')) {
-                console.log('Deleting image from storage: ' + img)
                 deleteImageFromStorageByUrl(img)
             }
         }

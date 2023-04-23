@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import React from 'react'
 import { Image, View, Text, StyleSheet, Pressable, Platform, TouchableOpacity } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
@@ -6,20 +6,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { CustomButton } from "../components/CustomButton";
 import { RoundCheckbox } from "../components/RoundCheckbox";
 import { Colors } from '../resources/colors';
-import { DefaultPadding, FontFamilies, FontSizes, GeneralTextStyle, GoogleWebClient, ToastDuration, DefaultShadow, ExpoClientID, IOSClientId } from "../resources/constants";
+import { DefaultPadding, FontFamilies, FontSizes, GeneralTextStyle, GoogleWebClient, ToastDuration, ExpoClientID, IOSClientId } from "../resources/constants";
 import { FF_logo, googleLogo } from "../resources/imageObj";
 import PhoneDimensions from "../resources/layout";
-import { AlertDialogStrings, ButtonStrings, LoginRegisterScreenStrings, NotificationsStrings } from "../resources/strings";
+import { ButtonStrings, LoginRegisterScreenStrings } from "../resources/strings";
 import { checkMarkSize } from "./FoodMoodScreen";
 import Ionicons from '@expo/vector-icons/Ionicons'
 import store from "../redux.store/configureStore";
-import database from '@react-native-firebase/database'
-import storage from '@react-native-firebase/storage'
 import auth from '@react-native-firebase/auth'
 import { useToast } from "react-native-fast-toast";
-import { APPLE_TOKEN, deleteStorageData, getStorageData, GOOGLE_TOKEN, LOGIN_INFO, PUSH_TOKEN, storeJSON, storeString } from "../dao/internalStorage";
+import { deleteStorageData, getStorageData, LOGIN_INFO, storeJSON } from "../dao/internalStorage";
 import { loginWithEmailAndPassword, signInWithOAuthCredential } from "../dao/userDAO";
-import { GoogleSignin, statusCodes, GoogleSigninButton } from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import * as Google from 'expo-auth-session/providers/google';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import EmptyDialog from "../components/EmptyDialog";
@@ -87,9 +85,6 @@ export const LoginScreen = ({ navigation }: any) => {
         })
     }
 
-    const hasNotificationsPermissions = async () => {
-        return (await getStorageData(PUSH_TOKEN)) !== ''
-    }
 
 
     const onPressLogin = () => {
@@ -97,12 +92,6 @@ export const LoginScreen = ({ navigation }: any) => {
             alert('Please enter valid email and password')
             return;
         }
-
-        if (!hasNotificationsPermissions()) {
-            alert(AlertDialogStrings.notificationsPermissions + '\nClose and start the app again.')
-            return;
-        }
-
 
         setIsDataLoading(true);
         loginWithEmailAndPassword(email, password, () => {
@@ -126,11 +115,6 @@ export const LoginScreen = ({ navigation }: any) => {
 
         //Firebase Service ID:
         // host.exp.Exponent
-        if (!hasNotificationsPermissions()) {
-            alert(AlertDialogStrings.notificationsPermissions + '\nClose and start the app again.')
-            return;
-        }
-
         const nonce = Math.random().toString(36).substring(2, 10);
 
         Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, nonce)
@@ -152,10 +136,10 @@ export const LoginScreen = ({ navigation }: any) => {
                 signInWithOAuthCredential(liveCredential, () => {
                     navigation.navigate('Welcome')
                     setIsDataLoading(false);
-                } , showToast)
+                }, showToast)
             })
             .catch((error) => {
-                console.log('Error signing in with apple id: ' + JSON.stringify(error))
+                report.log('Error signing in with apple id: ' + JSON.stringify(error))
                 alert('Error signing in with apple id: ' + JSON.stringify(error));
             })
             .finally(() => setIsDataLoading(false));
@@ -164,27 +148,20 @@ export const LoginScreen = ({ navigation }: any) => {
 
     async function onGoogleButtonPress() {
 
-        if (!hasNotificationsPermissions()) {
-            alert(AlertDialogStrings.notificationsPermissions + '\nClose and start the app again.')
-            return;
-        }
         // Check if your device supports Google Play
         setIsDataLoading(true);
         await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
         // Get the users ID token
         GoogleSignin.signIn().
             then(res => {
-                // let email = res?.user.email
-                console.log('Google signed in successfully')
                 let token = res.idToken
                 let credential = auth.GoogleAuthProvider.credential(token);
                 signInWithOAuthCredential(credential, () => {
                     navigation.navigate('Welcome')
                     setIsDataLoading(false);
-                } , showToast)
+                }, showToast)
             })
-
-
+            .catch(err => report.recordError(err));
     }
 
 

@@ -1,17 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import React from 'react'
-import { Image, View, Text, TouchableOpacity, StyleSheet, FlatList, SafeAreaView, Alert, Platform } from "react-native";
-import { DAILY_NOTIFICATION_ID, deleteStorageData, getStorageData, LAST_NEW_VIDEO, PUSH_TOKEN, SETTINGS, storeString } from "../dao/internalStorage";
+import { Image, View, Text, TouchableOpacity, StyleSheet, FlatList, SafeAreaView, Alert } from "react-native";
+import { DAILY_NOTIFICATION_ID,  getStorageData, LAST_NEW_VIDEO, MORNING_NOTIFICATION_ID, storeString } from "../dao/internalStorage";
 import store from "../redux.store/configureStore";
 import { Colors } from '../resources/colors';
-import { compareDates, dateToKeyDate, getFormattedDate, keyDateToDate, stringToTime } from "../resources/common";
-import { Activities, DEFAULT_DAILY_REMINDER, FontFamilies, } from "../resources/constants";
+import { compareDates, dateToKeyDate, getFormattedDate, keyDateToDate } from "../resources/common";
+import { Activities, DEFAULT_DAILY_REMINDER, DEFAULT_EVENING_WATER_REMINDER, DEFAULT_MORNING_WATER_REMINDER, FontFamilies, } from "../resources/constants";
 import { exerciseJournal, foodMoodJournal, sleepJournal, waterJournal } from "../resources/imageObj";
 import PhoneDimensions from "../resources/layout";
-import { AlertDialogStrings, ButtonStrings, HomeScreenStrings, NotificationsStrings } from "../resources/strings";
-import * as Notifications from "expo-notifications";
+import { AlertDialogStrings, HomeScreenStrings} from "../resources/strings";
 import { scheduleDailyReminder } from "../resources/notificationHelper";
-import { saveUserPushtoken } from "../dao/userDAO";
 
 
 const dateSelectorViewSize = PhoneDimensions.window.width / 10;
@@ -47,9 +45,11 @@ const DateSelectorCircle = (props: any) => {
     )
 }
 
+
+
 export const HomeScreen = ({ navigation }: any) => {
 
-   
+
 
     const startActivity = (activity: string) => {
         if (compareDates(selectedDate, new Date()) < 0) {
@@ -85,13 +85,15 @@ export const HomeScreen = ({ navigation }: any) => {
     if (userName.includes(" ")) displayName = userName.split(" ")[0];
     else displayName = userName;
 
+
     useEffect(() => {
 
         getStorageData(DAILY_NOTIFICATION_ID)
             .then(value => {
                 if (value == null) {// This will only run the first time the app is open
-                    console.log('Homescreen: scheduling daily reminders.')
-                    scheduleDailyReminder(DEFAULT_DAILY_REMINDER)
+                    scheduleDailyReminder(DEFAULT_DAILY_REMINDER, DAILY_NOTIFICATION_ID)
+                    scheduleDailyReminder(DEFAULT_MORNING_WATER_REMINDER, MORNING_NOTIFICATION_ID)
+                    scheduleDailyReminder(DEFAULT_EVENING_WATER_REMINDER, DEFAULT_DAILY_REMINDER)
                 }
             })
 

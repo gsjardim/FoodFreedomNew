@@ -10,7 +10,7 @@ import { ActivitiesStrings } from "../resources/strings";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { minusButton, plusButton, glassWater } from "../resources/imageObj";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { keyDateToStringDate, stringDateToKeyDate, stringToDate } from "../resources/common";
+import { keyDateToStringDate} from "../resources/common";
 import store from "../redux.store/configureStore";
 import { JournalEntry, WaterRecord } from "../models/JournalEntryModel";
 import { getJournalEntryByDate, saveJournalEntry } from "../dao/journalEntryDAO";
