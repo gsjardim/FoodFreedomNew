@@ -81,7 +81,7 @@ export const ActivitiesStrings = {
     fmHowIfeelBeforeOption: 'How I feel before my meal (optional)',
     fmFoodDrinkDescription: 'Food / Drink',
     fmDescriptionPlaceholder: 'Description',
-    fmHowIfeelAfter: 'How I felt after my meal',
+    fmHowIfeelAfter: 'How I feel after my meal',
     fmPhysicallyLabel: 'Physically',
     fmMentallyLabel: 'Mentally',
     fmEmtionallyLabel: 'Emotionally',

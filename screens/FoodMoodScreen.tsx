@@ -259,7 +259,7 @@ const FoodMoodScreen = ({ route, navigation }: any) => {
 
                         <View style={{ flexDirection: 'row', width: '100%', marginVertical: 20, alignItems: 'center', justifyContent: 'center' }}>
                             <Pressable onPress={() => {
-                                if (mealReminderTimer > 1) setMealReminderTimer(mealReminderTimer - 1)
+                                if (mealReminderTimer > 5) setMealReminderTimer(mealReminderTimer - 1)
                             }}>
                                 <Image source={minusButton} style={{ width: PLUS_BUTTON_SIZE, height: PLUS_BUTTON_SIZE }} />
                             </Pressable>
