@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 
     buttonStyle: {
         paddingVertical: PhoneDimensions.window.height * 0.01,
-        paddingHorizontal: PhoneDimensions.window.width * 0.06,
+        paddingHorizontal: PhoneDimensions.window.width * 0.01,
         backgroundColor: Colors.primaryColor,
         alignItems: 'center',
         justifyContent:'center',

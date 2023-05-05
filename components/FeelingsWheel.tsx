@@ -38,7 +38,7 @@ let graphicColor = [
 ];
 
 const wheelSize = PhoneDimensions.window.width * 0.9;
-const ButtonsWidth = (PhoneDimensions.window.width - (2 * DefaultPadding)) / 3.2;
+const ButtonsWidth = (PhoneDimensions.window.width - (2 * DefaultPadding)) / 3.1;
 
 const FeelingsWheel = ({ showModal, onSelect, onCancel, selectedFeeling }: WheelProps) => {
 

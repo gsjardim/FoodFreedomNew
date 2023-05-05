@@ -42,7 +42,7 @@ const happyFace = require('../assets/images/happy_blank.png')
 const sadFaceSelected = require('../assets/images/sad_selected.png')
 const fairFaceSelected = require('../assets/images/neutral_selected.png')
 const happyFaceSelected = require('../assets/images/happy_selected.png')
-const noFaceSelected = require('../assets/images/question_mark.png')
+const noFaceSelected = require('../assets/images/qmark.png')
 
 //Bottom tab
 const reportGreen = require('../assets/images/reports_green.png') 

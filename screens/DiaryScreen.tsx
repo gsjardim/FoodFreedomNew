@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Pressable, Modal } from "react-native";
+import { Text, View, StyleSheet, Pressable, Modal, Alert } from "react-native";
 import React from 'react';
 import { useEffect, useState } from "react";
 import { Colors } from "../resources/colors";
@@ -9,6 +9,7 @@ import { compareDates, dateToKeyDate, getMonthString } from "../resources/common
 import { JournalEntry } from "../models/JournalEntryModel";
 import store from "../redux.store/configureStore";
 import { getDataFromDbAndSetDiaryEntries } from "../dao/journalEntryDAO";
+import { HomeScreenStrings } from "../resources/strings";
 
 /**
  * This screen is divided into two main components:
@@ -90,7 +91,20 @@ const CalendarPicker = (props: CalendarProps) => {
         function onPressDate() {
             let currentDate = new Date(displayDate);
             currentDate.setDate(date);
-            if(compareDates(currentDate, today) <= 0)  props.onPressDate(dateToKeyDate(currentDate))
+            if(compareDates(currentDate, today) == 0)  props.onPressDate(dateToKeyDate(currentDate))
+            else if(compareDates(currentDate, today) < 0 ){
+                Alert.alert('Past date alert', HomeScreenStrings.pastDateAlert, [
+                    {
+                        text: 'Yes',
+                        onPress: () => props.onPressDate(dateToKeyDate(currentDate)),
+                        style: 'default'
+                    },
+                    {
+                        text: 'No',
+                        style: 'default'
+                    }
+                ])
+            }
         }
 
         return (

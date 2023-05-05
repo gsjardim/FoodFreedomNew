@@ -31,6 +31,7 @@ export const HomeScreenStrings = {
     waterTracker: 'Water\nTracker',
     exerciseTracker: 'Movement\nTracker',
     sleepTracker: 'Sleep\nTracker',
+    pastDateAlert: 'You are creating/editing a record for a past date. Continue?',
 };
 
 export const HistoryScreenStrings = {

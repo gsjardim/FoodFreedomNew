@@ -53,7 +53,7 @@ export const HomeScreen = ({ navigation }: any) => {
 
     const startActivity = (activity: string) => {
         if (compareDates(selectedDate, new Date()) < 0) {
-            Alert.alert('Past date alert', 'You are creating/editing a record for a past date. Continue?', [
+            Alert.alert('Past date alert', HomeScreenStrings.pastDateAlert, [
                 {
                     text: 'Yes',
                     onPress: () => navigation.navigate(activity, { currentDate: dateToKeyDate(selectedDate) }),
