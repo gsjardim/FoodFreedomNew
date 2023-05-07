@@ -50,7 +50,7 @@ const SleepScreen = ({ route, navigation }: any) => {
     const [isDropdownVisible, setIsDropdownVisible] = useState(false)
 
     const onSelectHoursOfSleep = (value: any) => {
-        setHoursOfSleep(value)
+        value && setHoursOfSleep(value)
         setIsDropdownVisible(false)
     }
 

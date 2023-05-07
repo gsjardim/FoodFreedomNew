@@ -134,12 +134,14 @@ export const RegisterScreen = ({ navigation }: any) => {
     }
 
     const onSelectOption = (value: number | string) => {
-        if (dropdownMode == YEAR_MODE) {
-            setYearOfBirth(value.toString());
-        }
-        else {
-            setGender(value.toString());
-        }
+        if (value) {
+                if (dropdownMode == YEAR_MODE) {
+                setYearOfBirth(value.toString());
+            }
+            else {
+                setGender(value.toString());
+            }
+        }   
         setDropdownVisible(false);
     }
 

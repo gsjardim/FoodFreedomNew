@@ -25,7 +25,7 @@ const diary = require('../assets/images/journal.png')
 
 const logoBanner = require('../assets/images/logo_banner.jpg')
 const freeResourcesBack = require('../assets/images/free_resources_background.png')
-const SarahPicture = require('../assets/images/sarah_photo.png')
+const SarahPicture = require('../assets/images/sarah_apple.jpg')
 const plusButton = require('../assets/images/plus.png')
 const minusButton = require('../assets/images/minus.png')
 const profilePic = require('../assets/images/profile_pic.jpg')

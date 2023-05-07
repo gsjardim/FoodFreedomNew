@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import React from 'react'
 import { Image, View, Text, TouchableOpacity, StyleSheet, FlatList, SafeAreaView, Alert } from "react-native";
-import { DAILY_NOTIFICATION_ID,  getStorageData, LAST_NEW_VIDEO, MORNING_NOTIFICATION_ID, storeString } from "../dao/internalStorage";
+import { DAILY_NOTIFICATION_ID,  EVENING_NOTIFICATION_ID,  getStorageData, LAST_NEW_VIDEO, MORNING_NOTIFICATION_ID, storeString } from "../dao/internalStorage";
 import store from "../redux.store/configureStore";
 import { Colors } from '../resources/colors';
 import { compareDates, dateToKeyDate, getFormattedDate, keyDateToDate } from "../resources/common";
@@ -93,7 +93,7 @@ export const HomeScreen = ({ navigation }: any) => {
                 if (value == null) {// This will only run the first time the app is open
                     scheduleDailyReminder(DEFAULT_DAILY_REMINDER, DAILY_NOTIFICATION_ID)
                     scheduleDailyReminder(DEFAULT_MORNING_WATER_REMINDER, MORNING_NOTIFICATION_ID)
-                    scheduleDailyReminder(DEFAULT_EVENING_WATER_REMINDER, DEFAULT_DAILY_REMINDER)
+                    scheduleDailyReminder(DEFAULT_EVENING_WATER_REMINDER, EVENING_NOTIFICATION_ID)
                 }
             })
 

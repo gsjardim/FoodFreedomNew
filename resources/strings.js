@@ -15,8 +15,8 @@ export const ButtonStrings = {
 export const AboutStrings = {
     sarahName: 'Sarah Roberts',
     certCoach: 'Certified Health Coach',
-    aboutSummary: 'For almost 20 years, I\'ve been searching for the tool that would help people "uncomplicate" their relationship with food and their bodies in order to free them from diet culture and the emotional roller coaster that comes with it. The FOOD FREEDOM application allows you to track the way your food and lifestyle choices affect the way you feel. With raised awareness around how your choices impact your emotions, and vice versa, you\'ll gain valuable insight into what drives your behavior. This will help you to start making positive changes automatically that leave you feeling well--mentally, emotionally and physically, without having to use willpower.',
-    aboutSummary2: 'To learn more about the FOOD FREEDOM application and receive FREE recipes and trainings on how to break free from diet culture forever and cultivate greater self-confidence and body-love, please visit:',
+    aboutSummary: "For over 20 years, I've been searching for the tool that would help people 'uncomplicate' their relationship with food and their bodies in order to free them from diet culture and the emotional roller coaster that comes with it.\n\nThis FOOD FREEDOM app allows you to track the way your food and lifestyle choices affect the way you FEEL.\n\nWith raised awareness around how your choices impact your emotions, and vice versa, you'll gain valuable insight into what drives your behavior. When you begin to connect your food with your mood, you naturally gravitate towards the things that make feel good--mentally, emotionally and physically, without having to use willpower. This will help you to make positive changes automatically and lead you to a life of freedom.",
+    aboutSummary2: "To learn more about the FOOD FREEDOM app and receive free recipes and trainings on how to break free from diet culture forever in order to cultivate greater self-confidence and body love, please visit",
     backButtonLabel: 'Back to home page',
 }
 
@@ -165,7 +165,7 @@ export const LoginRegisterScreenStrings = {
 }
 
 export const WelcomeScreenStrings = {
-    welcomeText: 'Hello, ',
+    welcomeText: 'Hello,',
     startButton: 'Welcome to your journal'
 }
 

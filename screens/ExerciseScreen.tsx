@@ -261,6 +261,7 @@ const ExerciseScreen = ({ route, navigation }: any) => {
                             onChangeText={(text) => setComment(text)}
                             multiline={true}
                             scrollEnabled={true}
+                            textAlignVertical="top"
                         />
                     </View>
                 }
@@ -343,7 +344,8 @@ const styles = StyleSheet.create({
     commentInput: {
         backgroundColor: Colors.opaqueWhite,
         width: '100%',
-        height: PhoneDimensions.window.width / 4,
+        minHeight: PhoneDimensions.window.width / 4,
+        maxHeight: PhoneDimensions.window.width / 2,
         borderWidth: 1.5,
         borderColor: Colors.darkGray,
         borderRadius: 5,
@@ -351,7 +353,6 @@ const styles = StyleSheet.create({
         paddingVertical: 7,
         fontFamily: FontFamilies.Verdana,
         fontSize: FontSizes.small_2,
-        textAlignVertical: "top",
     },
 
     itemView: {

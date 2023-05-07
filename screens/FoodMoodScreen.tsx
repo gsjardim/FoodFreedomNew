@@ -642,8 +642,8 @@ export const FMJournalForm = (props: any) => {
 
     };
 
-    const handleOnSelectFeeling = (value: string) => {
-        if (value === '') value = neutralMenuOption;
+    const handleOnSelectFeeling = (value?: string) => {
+        if (value == null || value === '') value = neutralMenuOption;
         switch (currentModalOption) {
             case PHYSICAL_BEFORE: setPb(value); break;
             case MENTAL_BEFORE: setMb(value); break;
@@ -742,7 +742,12 @@ export const FMJournalForm = (props: any) => {
 
 
     return (
-        <ScrollView style={formStyle.formWrapper} showsVerticalScrollIndicator={false}  >
+        <ScrollView style={formStyle.formWrapper} showsVerticalScrollIndicator={false} 
+            onTouchEnd={() => {
+                setCommentsFocused(false)
+                setDescriptionFocused(false)
+            }}
+        >
 
             <CustomDropDown
                 data={modalData}
@@ -803,7 +808,7 @@ export const FMJournalForm = (props: any) => {
                 <TextInput
                     style={[formStyle.foodDescriptionInput, { borderColor: descriptionFocused ? Colors.exerciseCircle : Colors.darkGray }]}
                     multiline={true}
-                    scrollEnabled={true}
+                    scrollEnabled={false}
                     placeholder={"Description..."}
                     textAlignVertical={"top"}
                     onFocus={() => setDescriptionFocused(true)}
@@ -999,9 +1004,10 @@ const formStyle = StyleSheet.create({
     foodDescriptionInput: {
         marginTop: 5,
         width: '100%',
-        height: PhoneDimensions.window.height * 0.12,
+        minHeight: PhoneDimensions.window.height * 0.12,
         borderColor: Colors.darkGray,
         borderWidth: 1.5,
+        borderRadius: 5,
         paddingHorizontal: 7,
         paddingVertical: 10,
         fontFamily: FontFamilies.Verdana,
