@@ -66,15 +66,14 @@ const styles = StyleSheet.create({
     },
 
     photoView: {
-        alignSelf: 'center',
         marginVertical: 33,
-        elevation: 9,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
     photo: {
-        width: PhoneDimensions.window.width * 0.65,
         height: PhoneDimensions.window.width * 0.65,
-
+        resizeMode: 'contain',
     },
 
     link: {

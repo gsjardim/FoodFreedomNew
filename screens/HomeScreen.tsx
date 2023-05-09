@@ -10,6 +10,7 @@ import { exerciseJournal, foodMoodJournal, sleepJournal, waterJournal } from "..
 import PhoneDimensions from "../resources/layout";
 import { AlertDialogStrings, HomeScreenStrings} from "../resources/strings";
 import { scheduleDailyReminder } from "../resources/notificationHelper";
+import report from "../components/CrashReport";
 
 
 const dateSelectorViewSize = PhoneDimensions.window.width / 10;
@@ -96,6 +97,7 @@ export const HomeScreen = ({ navigation }: any) => {
                     scheduleDailyReminder(DEFAULT_EVENING_WATER_REMINDER, EVENING_NOTIFICATION_ID)
                 }
             })
+            .catch(error => report.recordError(error))
 
         function areThereNewVideos() {
             let latestVideoDate = '';
