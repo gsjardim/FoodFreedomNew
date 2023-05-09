@@ -28,7 +28,6 @@ const freeResourcesBack = require('../assets/images/free_resources_background.pn
 const SarahPicture = require('../assets/images/sarah_apple.jpg')
 const plusButton = require('../assets/images/plus.png')
 const minusButton = require('../assets/images/minus.png')
-const profilePic = require('../assets/images/profile_pic.jpg')
 const customPencil = require('../assets/images/pencil.png')
 
 //Login alternate options
@@ -90,7 +89,6 @@ export {
     sadFaceSelected,
     fairFaceSelected,
     happyFaceSelected,
-    profilePic,
     googleLogo,
     waterBackground,
     foodBackground,
