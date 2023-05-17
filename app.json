@@ -29,6 +29,7 @@
       },
       "googleServicesFile": "./google-services.json",
       "package": "com.gsjardim83.foodfreedomRN",
+      "versionCode": 1,
       "permissions": [
         "android.permission.RECORD_AUDIO"
       ]

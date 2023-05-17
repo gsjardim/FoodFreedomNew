@@ -8,7 +8,6 @@ export const MENTAL_FEELINGS_REF = 'Feelings/MENTAL';
 export const PHYSICAL_FEELINGS_REF = 'Feelings/PHYSICAL';
 export const FEELINGS_REF = 'Feelings';
 export const VIDEOS_REF = 'Videos';
-export const TOKENS_REF = 'Tokens';
 
 export const setValueToDatabase = async (reference, value, callback) => {
 

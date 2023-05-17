@@ -26,6 +26,22 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "../path/to/api-xxx-yyy-zzz.json",
+        "track": "internal"
+      },
+      "ios": {
+        "appleId": "gsjardim83@gmail.com",
+        "ascAppId": "6449220390",
+        "appleTeamId": "6TYFFXR3RU",
+        "sku": "foodfreedom.202305",
+        "companyName":"G Jardim Apps",
+        "appName" : "Food Freedom App",
+        "ascApiKeyPath": "AuthKey_CF8MM9B52Z.p8",
+        "ascApiKeyIssuerId": "7cf66fb7-7533-4418-a206-e5db83b3c07a",
+        "ascApiKeyId" : "CF8MM9B52Z"
+      }
+    }
   }
 }
