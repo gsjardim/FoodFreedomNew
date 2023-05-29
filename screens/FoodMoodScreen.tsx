@@ -13,7 +13,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { sadFaceSelected, fairFaceSelected, happyFaceSelected, minusButton, plusButton } from "../resources/imageObj";
 import { RoundCheckbox } from "../components/RoundCheckbox";
-import { compareDates, get12hourFormatTime, keyDateToDate, keyDateToStringDate,  stringTimeToKeyTime, stringToTime } from "../resources/common";
+import { compareDates, get12hourFormatTime, keyDateToDate, keyDateToStringDate, stringTimeToKeyTime, stringToTime } from "../resources/common";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
 import { FoodMoodJournal } from "../models/JournalEntryModel";
@@ -200,7 +200,13 @@ const FoodMoodScreen = ({ route, navigation }: any) => {
                     let dbTime = stringTimeToKeyTime(fmj.time, fmj.date)
                     let imageStoragePath = storageReference + dbDate + '_' + dbTime + '.jpeg'
                     const ref = JOURNAL_REF + '/' + currentUser.id + '/' + dbDate + '/foodMoodRecords/' + fmjArray.indexOf(fmj).toString() + '/pictureUri';
+                    console.log('The DB picture path is:' + ref)
                     uploadImageToStorage(fmj.pictureUri, imageStoragePath, (url: string) => setJournalEntryPictureUrl(ref, url))
+                        .catch(error => {
+                            showToast('Error saving images to database. Please contact the app admin')
+                            console.log(error)
+                            report.recordError(error)
+                        })
                 }
             }
 
@@ -209,6 +215,10 @@ const FoodMoodScreen = ({ route, navigation }: any) => {
         for (let img of deleteImages) {
             if (img.includes('http')) {
                 deleteImageFromStorageByUrl(img)
+                    .catch(error => {
+                        report.recordError(error)
+                        showToast('Error deleting images from database')
+                    })
             }
         }
 
@@ -459,8 +469,7 @@ export const FoodMoodJournalCard = (props: any) => {
     const index = props.item.index
     const onEdit = props.onEdit
     const onDelete = props.onDelete
-
-    const [picture, setPicture] = useState(item.pictureUri);
+    const picture = item.pictureUri;
 
     const onSelect = () => {
 
@@ -685,7 +694,7 @@ export const FMJournalForm = (props: any) => {
     const takeAndSetPicture = async (mode?: number) => {
 
 
-        let result: ImagePicker.ImagePickerResult;
+        let result: ImagePicker.ImagePickerResult = null;
         try {
             if (mode === ADD_FROM_GALLERY) {
 
@@ -742,7 +751,7 @@ export const FMJournalForm = (props: any) => {
 
 
     return (
-        <ScrollView style={formStyle.formWrapper} showsVerticalScrollIndicator={false} 
+        <ScrollView style={formStyle.formWrapper} showsVerticalScrollIndicator={false}
             onTouchEnd={() => {
                 setCommentsFocused(false)
                 setDescriptionFocused(false)
