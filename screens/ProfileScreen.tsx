@@ -5,6 +5,7 @@ import { CustomButton } from "../components/CustomButton";
 import { Colors } from '../resources/colors';
 import { DefaultPadding, FontFamilies, FontSizes, GeneralTextStyle, PencilIconSize, ToastDuration, validationRegex } from "../resources/constants";
 import Ionicons from '@expo/vector-icons/Ionicons'
+import AntDesign from '@expo/vector-icons/AntDesign'
 import PhoneDimensions from "../resources/layout";
 import { ActivitiesStrings, ButtonStrings, LoginRegisterScreenStrings, ProfileScreenStrings } from "../resources/strings";
 import {  TextInput, TouchableOpacity } from "react-native-gesture-handler";
@@ -390,6 +391,12 @@ export const ProfileScreen = ({ navigation }: any) => {
                     <UserInfoLine labelText={ProfileScreenStrings.lastJournalEntry} text={lastJournalEntry && keyDateToStringDate(lastJournalEntry)} />
                 </View>
 
+                <Pressable style={{ flexDirection: 'row', alignItems: 'center', width: '100%', marginBottom: 7, marginTop: 10}}
+                    onPress={() => alert(ProfileScreenStrings.deleteAccountWarning)}
+                >
+                    <Text style={[styles.labels, {color: Colors.fontColor, marginRight: 8}]}>{ProfileScreenStrings.deleteAccount}</Text>
+                    <AntDesign name="deleteuser" size={PencilIconSize * 0.8} color={Colors.warning}/>
+                </Pressable>
 
 
 

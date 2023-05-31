@@ -11,6 +11,7 @@ export const Colors = {
     weblink: '#0000EE',
     deepBlue: '#514d92',
     lightGreen: 'rgba(136, 204, 0, 0.3)',
+    warning: '#DC1717',
 
     //Custom colors
     foodCircle: "#83b846",

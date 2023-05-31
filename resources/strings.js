@@ -126,6 +126,8 @@ export const ProfileScreenStrings = {
     title: 'My Profile',
     changePicture: 'Tap image to add/change picture',
     emailLabel: 'Email address: ',
+    deleteAccount: 'Delete my account',
+    deleteAccountWarning: 'Are you sure you wish to delete your account? By doing so, you will permanently lose all of your images, history and content.\nYou can delete the app from your phone and install again later, if you prefer not to delete your account completely.\nContinue anyway?',
     changePasswordButton: 'Password: ',
     userNameLabel: 'User name: ',
     dateOfBirth: 'Year of birth: ',
