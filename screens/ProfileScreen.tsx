@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import React from 'react'
-import { View, Text, StyleSheet, Image, Pressable, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable, ActivityIndicator, Alert } from "react-native";
 import { CustomButton } from "../components/CustomButton";
 import { Colors } from '../resources/colors';
 import { DefaultPadding, FontFamilies, FontSizes, GeneralTextStyle, PencilIconSize, ToastDuration, validationRegex } from "../resources/constants";
@@ -8,22 +8,26 @@ import Ionicons from '@expo/vector-icons/Ionicons'
 import AntDesign from '@expo/vector-icons/AntDesign'
 import PhoneDimensions from "../resources/layout";
 import { ActivitiesStrings, ButtonStrings, LoginRegisterScreenStrings, ProfileScreenStrings } from "../resources/strings";
-import {  TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import OverlayTextInput from "../components/OverlayTextInput";
 import * as ImagePicker from 'expo-image-picker';
 import store from "../redux.store/configureStore";
 import UserModel from "../models/UserModel";
-import {  uploadImageToStorage } from "../dao/storageDAO";
-import { updateUserEmail, updateUserName, updateUserPictureUrl } from "../dao/userDAO";
+import { uploadImageToStorage } from "../dao/storageDAO";
+import { handleSignOut, updateUserEmail, updateUserName, updateUserPictureUrl } from "../dao/userDAO";
 import { updatePhotoUrl } from "../redux.store/actions/userActions/creators";
 import { keyDateToStringDate } from "../resources/common";
 import { PencilIcon } from "../components/Pencil_Icon";
 import EmptyDialog from "../components/EmptyDialog";
 import auth from '@react-native-firebase/auth'
+import database from '@react-native-firebase/database'
+import storage from '@react-native-firebase/storage'
 import { ErrorWarning } from "../components/ErrorWarning";
 import { useToast } from "react-native-fast-toast";
 import report from "../components/CrashReport";
+import { USERS_REF } from "../dao/databaseCommon";
+import { JOURNAL_REF } from "../dao/databaseCommon";
 
 
 
@@ -307,6 +311,36 @@ export const ProfileScreen = ({ navigation }: any) => {
         navigation.goBack()
     }
 
+    const handleDeleteAccount = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'LoginScreen' }],
+        });
+        const userId = auth().currentUser.uid;
+
+        auth().currentUser.delete()
+            .then(() => {
+                handleSignOut()
+                    .then(() => {
+                        database().ref(USERS_REF + '/' + userId).remove()
+                            .catch(error => report.log(error))
+                        database().ref(JOURNAL_REF + '/' + userId).remove()
+                            .catch(error => report.log(error))
+                        storage().ref('images/' + userId).delete()
+                            .catch(error => report.log(error))
+                    })
+
+            })
+            .catch(error => {
+                if (error.includes('recent')) {
+                    alert('A recent sign in is required to complete the deletion of your account.\nPlease sign out of the app, sign back in and try again.')
+                }
+            })
+
+
+
+
+    }
 
     return (
         <KeyboardAwareScrollView contentContainerStyle={styles.container}>
@@ -391,12 +425,26 @@ export const ProfileScreen = ({ navigation }: any) => {
                     <UserInfoLine labelText={ProfileScreenStrings.lastJournalEntry} text={lastJournalEntry && keyDateToStringDate(lastJournalEntry)} />
                 </View>
 
-                <Pressable style={{ flexDirection: 'row', alignItems: 'center', width: '100%', marginBottom: 7, marginTop: 10}}
-                    onPress={() => alert(ProfileScreenStrings.deleteAccountWarning)}
+                {/* <Pressable style={{ flexDirection: 'row', alignItems: 'center', width: '100%', marginBottom: 7, marginTop: 10 }}
+                    onPress={() => Alert.alert(
+                        'Delete account',
+                        ProfileScreenStrings.deleteAccountWarning,
+                        [
+                            {
+                                text: 'Yes',
+                                style: 'default',
+                                onPress: () => handleDeleteAccount()
+                            },
+                            {
+                                text: 'No',
+                                style: 'default',
+                            }
+                        ]
+                    )}
                 >
-                    <Text style={[styles.labels, {color: Colors.fontColor, marginRight: 8}]}>{ProfileScreenStrings.deleteAccount}</Text>
-                    <AntDesign name="deleteuser" size={PencilIconSize * 0.8} color={Colors.warning}/>
-                </Pressable>
+                    <Text style={[styles.labels, { color: Colors.fontColor, marginRight: 8 }]}>{ProfileScreenStrings.deleteAccount}</Text>
+                    <AntDesign name="deleteuser" size={PencilIconSize * 0.8} color={Colors.warning} />
+                </Pressable> */}
 
 
 

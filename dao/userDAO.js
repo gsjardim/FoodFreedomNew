@@ -10,6 +10,16 @@ import { setUpCachedJournalEntries } from "./journalEntryDAO";
 import { getQuotes, setFeelings, setIsDataLoading, setVideos } from "../redux.store/actions/generalActions/creators";
 import { getFormattedDate } from "../resources/common";
 import report from "../components/CrashReport";
+import { deleteStorageData } from "./internalStorage";
+
+export const handleSignOut = async () => {
+    auth().signOut()
+        .then(() => store.dispatch(logoutUser()));
+
+    deleteStorageData(FB_TOKEN)
+
+    store.dispatch(setSocialAuthentication(false));
+};
 
 export const saveUserPushtoken = (token) => {
     const uid = store.getState().users.currentUser.id;

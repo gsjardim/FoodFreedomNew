@@ -16,6 +16,7 @@ import auth from '@react-native-firebase/auth'
 import store from '../redux.store/configureStore';
 import { logoutUser, setSocialAuthentication } from '../redux.store/actions/userActions/creators';
 import { deleteStorageData, FB_TOKEN} from '../dao/internalStorage';
+import { handleSignOut } from '../dao/userDAO';
 
 
 
@@ -58,14 +59,7 @@ const getIcon = (label: string) => {
 const CustomDrawerContent = (props: any) => {
 
    
-    const handleSignOut = async () => {
-        auth().signOut()
-            .then(() => store.dispatch(logoutUser()));
-
-        deleteStorageData(FB_TOKEN)
-
-        store.dispatch(setSocialAuthentication(false));
-    };
+   
 
     const handlePressDrawerItem = (label: string) => {
         switch (label) {
