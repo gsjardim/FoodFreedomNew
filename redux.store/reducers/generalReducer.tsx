@@ -13,8 +13,7 @@ const initialState = {
 }
 
 const generalParamsReducer = (state: any = initialState, action: any) => {
-    switch (action.type) {
-
+    switch (action.type) {        
         case GET:
             return { ...state, quotesArray: action.payload }
         case LOGIN_READY:

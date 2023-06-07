@@ -75,11 +75,10 @@ export default function App() {
           let providerData = user.providerData;
           let hasPasswordAuth = false;
           for (let obj of providerData) {
-            if (obj.providerId === 'password') hasPasswordAuth = true;
+            if (obj.providerId === 'password') {hasPasswordAuth = true; break;}
           }
           if (!hasPasswordAuth) store.dispatch(setSocialAuthentication(true))
-          
-          initializeAppData(user, () => setFirstScreen(WelcomeScreen));
+          initializeAppData(user, () => setFirstScreen(WelcomeScreen))
         }
 
       })

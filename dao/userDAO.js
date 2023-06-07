@@ -152,40 +152,27 @@ const onFail = (error, callback) => {
     if (callback != null && callback.name !== 'showToast') callback();
 }
 
+
 export const initializeAppData = (fbUser, callback) => {
-    //Finally, loads the user's info
+    //Loads feelings from data base. They will be updated if the db changes.
+    database().ref(FEELINGS_REF).on('value', snapshot => store.dispatch(setFeelings(snapshot.val())), error => console.log(error))
+        
+    //Loads user info and journal entries for the current user
+    database().ref('Users/' + fbUser.uid).once('value', snapshot => store.dispatch(loginUser(snapshot)))
+        .then(() => setUpCachedJournalEntries(fbUser));
 
-    database().ref('Users/' + fbUser.uid).once('value', (snapshot) => {
-        store.dispatch(loginUser(snapshot));
-        store.dispatch(setIsDataLoading(false))
+    //Loads videos
+    database().ref(VIDEOS_REF).on('value', snapshot => store.dispatch(setVideos(snapshot.val())), error => console.log('Error loading videos: ' + error))
+
+    //Loads quotes and finally moves to Welcome screen
+    database().ref(QUOTES_REF).once('value', snapshot => {
+        store.dispatch(getQuotes(snapshot.val()))
     })
-        .then(() => {
-            //Loads quotes into app
-            database().ref(QUOTES_REF).once('value', snapshot => {
-                store.dispatch(getQuotes(snapshot.val()))
-            }, _error => {
-                store.dispatch(getQuotes([{ category: 'general', content: 'Welcome to the Food Freedom App!' }]))
-            })
-        })
-        .then(() => {
-            //Loads last 30 days of journal entries onto memory
-            setUpCachedJournalEntries(fbUser)
-        })
-        .then(() => {
-            //Loads videos
-            database().ref(VIDEOS_REF).on('value', snapshot => {
-                store.dispatch(setVideos(snapshot.val()))
-            })
-        })
-        .then(() => {
-            //Loads feelings that can be selected in the food mood journal
-            database().ref(FEELINGS_REF).on('value', snapshot => {
-
-                store.dispatch(setFeelings(snapshot.val()))
-            })
-            callback(); //Calls the onSuccess callback function - Go to welcome screen
-        })
-        .catch(error => report.recordError(error))
+    .then(() => callback())
+    .catch(error => {
+        console.log('Loading quotes error: ' + error)
+        store.dispatch(getQuotes([{ category: 'general', content: 'Welcome to the Food Freedom App!' }]))
+    })
 
 }
 
