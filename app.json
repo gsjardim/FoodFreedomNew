@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
+      "buildNumber":"1.0.1",
+      "supportsTablet": false,
       "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.gsjardim83.foodfreedomRN",
       "infoPlist":{
