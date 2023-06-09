@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import React from 'react'
-import { Image, View, Text, StyleSheet, Pressable, Platform, TouchableOpacity } from "react-native";
+import { Image, View, Text, StyleSheet, Pressable, Platform, TouchableOpacity, Alert } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CustomButton } from "../components/CustomButton";
@@ -24,7 +24,9 @@ import EmptyDialog from "../components/EmptyDialog";
 import { ErrorWarning } from "../components/ErrorWarning";
 import * as Crypto from 'expo-crypto';
 import report from "../components/CrashReport";
-
+import UserModel from "../models/UserModel";
+import database from '@react-native-firebase/database'
+import { getFormattedDate } from "../resources/common";
 export const LOGO_SIZE = PhoneDimensions.window.width * 0.3;
 export const GOOGLE_LOGIN = 'google';
 export const APPLE_LOGIN = 'apple';
@@ -164,6 +166,44 @@ export const LoginScreen = ({ navigation }: any) => {
             .catch(err => report.recordError(err));
     }
 
+    const testCreateAccount = () => {
+        let email = 'gsjsud@yahoo.com.br'
+        let password1 = '@Araras911'
+        let yearOfBirth = '1980'
+        let userName = 'Thads'
+        auth().createUserWithEmailAndPassword(email, password1)
+        .then(() => {
+            let currentUser = auth().currentUser;
+            let newUser = new UserModel(currentUser?.uid, userName, email, yearOfBirth, getFormattedDate(new Date()), '', '');
+            currentUser?.sendEmailVerification();
+            //Add new user to database
+            database().ref('Users/'+ currentUser?.uid).set(newUser);
+            // database().ref(JOURNAL_REF).set(currentUser?.uid);
+            Alert.alert(
+                'Confirmation',
+                'User created! Please verify your email to finish the registration proccess.',
+                [
+                    {
+                        text: 'OK',
+                        style: 'default',
+                        // onPress: () => {
+                        //     auth().signOut();
+                        //     navigation.pop();
+                        // }
+                    }
+                ])
+        })
+        .catch(error => {
+            if (error.code === 'auth/email-already-in-use') {
+                showToast('Email address is already in use.');
+            }
+
+            if (error.code === 'auth/invalid-email') {
+                showToast('Email address is invalid!');
+            }
+
+        });
+    }
 
 
     const ResetPasswordDialog = (props: any) => {

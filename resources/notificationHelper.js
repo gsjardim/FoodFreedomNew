@@ -9,7 +9,6 @@ import store from "../redux.store/configureStore";
 
 const registerForNotifications = async () => {
 
-   
     try {
         const { status: existingStatus } = await Notifications.getPermissionsAsync()        
         if (existingStatus !== 'granted') {

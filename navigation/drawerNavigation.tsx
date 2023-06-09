@@ -12,10 +12,10 @@ import { FreeResourcesScreen } from '../screens/FreeResourcesScreen';
 import { AboutScreen } from '../screens/AboutScreen';
 import { ContactScreen } from '../screens/ContactScreen';
 import { Diary } from '../screens/DiaryScreen';
-import auth from '@react-native-firebase/auth'
-import store from '../redux.store/configureStore';
-import { logoutUser, setSocialAuthentication } from '../redux.store/actions/userActions/creators';
-import { deleteStorageData, FB_TOKEN} from '../dao/internalStorage';
+// import auth from '@react-native-firebase/auth'
+// import store from '../redux.store/configureStore';
+// import { logoutUser, setSocialAuthentication } from '../redux.store/actions/userActions/creators';
+// import { deleteStorageData, FB_TOKEN} from '../dao/internalStorage';
 import { handleSignOut } from '../dao/userDAO';
 
 

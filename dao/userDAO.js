@@ -3,14 +3,14 @@ import database from '@react-native-firebase/database'
 import storage from '@react-native-firebase/storage'
 import auth from '@react-native-firebase/auth'
 import UserModel from "../models/UserModel";
-import { loginUser, setSocialAuthentication, updateStoreUserEmail, updateStoreUserName } from "../redux.store/actions/userActions/creators";
+import { loginUser, logoutUser, setSocialAuthentication, updateStoreUserEmail, updateStoreUserName } from "../redux.store/actions/userActions/creators";
 import store from "../redux.store/configureStore";
 import { FEELINGS_REF, QUOTES_REF, setValueToDatabase, USERS_REF, VIDEOS_REF } from "./databaseCommon";
 import { setUpCachedJournalEntries } from "./journalEntryDAO";
 import { getQuotes, setFeelings, setIsDataLoading, setVideos } from "../redux.store/actions/generalActions/creators";
 import { getFormattedDate } from "../resources/common";
 import report from "../components/CrashReport";
-import { deleteStorageData } from "./internalStorage";
+import { FB_TOKEN, deleteStorageData } from "./internalStorage";
 
 export const handleSignOut = async () => {
     auth().signOut()
@@ -153,13 +153,16 @@ const onFail = (error, callback) => {
 }
 
 
-export const initializeAppData = (fbUser, callback) => {
+export const initializeAppData = async (fbUser, callback) => {
     //Loads feelings from data base. They will be updated if the db changes.
     database().ref(FEELINGS_REF).on('value', snapshot => store.dispatch(setFeelings(snapshot.val())), error => console.log(error))
         
     //Loads user info and journal entries for the current user
-    database().ref('Users/' + fbUser.uid).once('value', snapshot => store.dispatch(loginUser(snapshot)))
-        .then(() => setUpCachedJournalEntries(fbUser));
+    const userSnapshot = await database().ref('Users/' + fbUser.uid).once('value')
+    // database().ref('Users/' + fbUser.uid).once('value', snapshot => {
+        store.dispatch(loginUser(userSnapshot))
+        setUpCachedJournalEntries(fbUser)
+    // })
 
     //Loads videos
     database().ref(VIDEOS_REF).on('value', snapshot => store.dispatch(setVideos(snapshot.val())), error => console.log('Error loading videos: ' + error))

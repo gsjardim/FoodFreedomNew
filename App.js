@@ -72,6 +72,8 @@ export default function App() {
         }
         else {
 
+          // auth().signOut()
+
           let providerData = user.providerData;
           let hasPasswordAuth = false;
           for (let obj of providerData) {
