@@ -16,6 +16,7 @@
     ],
     "ios": {
       "buildNumber":"1.0.1",
+      "icon": "./assets/icon.png",
       "supportsTablet": false,
       "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.gsjardim83.foodfreedomRN",
@@ -25,7 +26,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
       "googleServicesFile": "./google-services.json",
