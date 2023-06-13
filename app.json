@@ -2,9 +2,9 @@
   "expo": {
     "name": "Food Freedom App",
     "slug": "foodfreedomRN",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/splash_screen.png",
@@ -15,8 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber":"1.0.1",
-      "icon": "./assets/icon.png",
+      "buildNumber":"1.0.3",
+      "icon": "./assets/images/icon.png",
       "supportsTablet": false,
       "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.gsjardim83.foodfreedomRN",
@@ -26,7 +26,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
       "googleServicesFile": "./google-services.json",
@@ -35,9 +35,6 @@
       "permissions": [
         "android.permission.RECORD_AUDIO"
       ]
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
