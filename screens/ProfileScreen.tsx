@@ -326,22 +326,33 @@ export const ProfileScreen = ({ navigation }: any) => {
         database().ref(JOURNAL_REF + '/' + userId).remove()
 
 
-        storage().ref('images/' + userId).list()
-            .then(results => {
-                results.items.forEach(item => deleteFile(item))
-                console.log('Storage cleared')
-                handleSignOut()
-                    .then(() => {
-                        console.log('Signed out')
-                        auth().currentUser.delete()
-                            .then(() => showToast('Account deleted successfully.'))
-                            .catch(error => {
-                                if (error.message.includes('recent')) {
-                                    alert('A recent sign in is required to complete the deletion of your account.\nPlease sign out of the app, sign back in and try again.')
-                                }
-                            })
+        handleSignOut()
+            .then(() => {
+                auth().currentUser.delete()
+                    .then(() => showToast('Account deleted successfully.'))
+                    .catch(error => {
+                        if (error.message.includes('recent')) {
+                            alert('A recent sign in is required to complete the deletion of your account.\nPlease sign out of the app, sign back in and try again.')
+                        }
                     })
             })
+
+        // storage().ref('images/' + userId).list()
+        //     .then(results => {
+        //         results.items.forEach(item => deleteFile(item))
+        //         console.log('Storage cleared')
+        //         handleSignOut()
+        //             .then(() => {
+        //                 console.log('Signed out')
+        //                 auth().currentUser.delete()
+        //                     .then(() => showToast('Account deleted successfully.'))
+        //                     .catch(error => {
+        //                         if (error.message.includes('recent')) {
+        //                             alert('A recent sign in is required to complete the deletion of your account.\nPlease sign out of the app, sign back in and try again.')
+        //                         }
+        //                     })
+        //             })
+        //     })
 
 
     }
