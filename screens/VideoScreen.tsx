@@ -1,8 +1,8 @@
 import React from 'react'
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Colors } from '../resources/colors';
-import { Video, AVPlaybackStatus, ResizeMode } from 'expo-av';
-import { useRef, useState } from "react";
+import { Video, ResizeMode } from 'expo-av';
+import { useRef} from "react";
 import PhoneDimensions from "../resources/layout";
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { GeneralTextStyle } from "../resources/constants";
@@ -13,18 +13,6 @@ export const VideoScreen = ({ route, navigation }: any) => {
     let url = route.params.videoUrl;
     let description = route.params.videoDesc;
     const video = useRef<Video>(null);
-    // const [status, setStatus] = useState<AVPlaybackStatus>();
-    // const [showTitle, setShowTitle] = useState(true);
-
-    // const updatePlaybackCallback = (status: any) => {
-    //     if(status.isLoaded){
-    //         setShowTitle(false);
-    //     }
-    //     if(status.didJustFinish){
-    //         setShowTitle(true);
-    //     }
-
-    // }
 
     return (
         <View style={styles.container}>

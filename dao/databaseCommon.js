@@ -11,7 +11,6 @@ export const VIDEOS_REF = 'Videos';
 
 export const setValueToDatabase = async (reference, value, callback) => {
 
-
     database().ref(reference).set(value, () => {
         
         if(callback != null){

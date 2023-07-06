@@ -2,7 +2,7 @@
   "expo": {
     "name": "Food Freedom App",
     "slug": "foodfreedomRN",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "light",
@@ -15,7 +15,7 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber":"1.0.3",
+      "buildNumber":"1.0.4",
       "icon": "./assets/images/icon.png",
       "supportsTablet": false,
       "googleServicesFile": "./GoogleService-Info.plist",
@@ -33,7 +33,7 @@
       "package": "com.gsjardim83.foodfreedomRN",
       "versionCode": 1,
       "permissions": [
-        "android.permission.RECORD_AUDIO"
+        "RECORD_AUDIO"
       ]
     },
     "extra": {

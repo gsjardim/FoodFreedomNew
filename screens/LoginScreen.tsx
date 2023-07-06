@@ -27,6 +27,7 @@ import report from "../components/CrashReport";
 import UserModel from "../models/UserModel";
 import database from '@react-native-firebase/database'
 import { getFormattedDate } from "../resources/common";
+import { setValueToDatabase } from "../dao/databaseCommon";
 export const LOGO_SIZE = PhoneDimensions.window.width * 0.3;
 export const GOOGLE_LOGIN = 'google';
 export const APPLE_LOGIN = 'apple';

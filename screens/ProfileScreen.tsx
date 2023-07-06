@@ -17,7 +17,7 @@ import UserModel from "../models/UserModel";
 import { uploadImageToStorage } from "../dao/storageDAO";
 import { handleSignOut, updateUserEmail, updateUserName, updateUserPictureUrl } from "../dao/userDAO";
 import { updatePhotoUrl } from "../redux.store/actions/userActions/creators";
-import { getFormattedDate, keyDateToStringDate } from "../resources/common";
+import { dateToKeyDate, getFormattedDate, keyDateToStringDate } from "../resources/common";
 import { PencilIcon } from "../components/Pencil_Icon";
 import EmptyDialog from "../components/EmptyDialog";
 import auth from '@react-native-firebase/auth'
@@ -26,7 +26,7 @@ import storage, { FirebaseStorageTypes } from '@react-native-firebase/storage'
 import { ErrorWarning } from "../components/ErrorWarning";
 import { useToast } from "react-native-fast-toast";
 import report from "../components/CrashReport";
-import { USERS_REF } from "../dao/databaseCommon";
+import { USERS_REF, getValueFromDatabase, setValueToDatabase } from "../dao/databaseCommon";
 import { JOURNAL_REF } from "../dao/databaseCommon";
 
 
@@ -311,7 +311,7 @@ export const ProfileScreen = ({ navigation }: any) => {
         navigation.goBack()
     }
 
-    const deleteFile = async (file: FirebaseStorageTypes.Reference) => await file.delete()
+    // const deleteFile = async (file: FirebaseStorageTypes.Reference) => await file.delete()
 
     const handleDeleteAccount = async () => {
 
@@ -320,41 +320,28 @@ export const ProfileScreen = ({ navigation }: any) => {
             index: 0,
             routes: [{ name: 'LoginScreen' }],
         });
-        const userId = auth().currentUser.uid;
+
+        const currentUser: UserModel = store.getState().users.currentUser;
+        const userId = currentUser.id;
+
+        let time = new Date().toLocaleString();
+        const DEL_REF = 'Deleted/' + userId;
+        setValueToDatabase(DEL_REF, {
+            time: time,
+            user: currentUser
+        }, null)
 
         database().ref(USERS_REF + '/' + userId).remove()
         database().ref(JOURNAL_REF + '/' + userId).remove()
 
-
-        handleSignOut()
-            .then(() => {
-                auth().currentUser.delete()
-                    .then(() => showToast('Account deleted successfully.'))
-                    .catch(error => {
-                        if (error.message.includes('recent')) {
-                            alert('A recent sign in is required to complete the deletion of your account.\nPlease sign out of the app, sign back in and try again.')
-                        }
-                    })
+        auth().currentUser.delete()
+            .then(() => showToast('Account deleted successfully.'))
+            .catch(error => {
+                if (error.message.includes('recent')) {
+                    alert('A recent sign in is required to complete the deletion of your account.\nPlease sign out of the app, sign back in and try again.')
+                }
             })
-
-        // storage().ref('images/' + userId).list()
-        //     .then(results => {
-        //         results.items.forEach(item => deleteFile(item))
-        //         console.log('Storage cleared')
-        //         handleSignOut()
-        //             .then(() => {
-        //                 console.log('Signed out')
-        //                 auth().currentUser.delete()
-        //                     .then(() => showToast('Account deleted successfully.'))
-        //                     .catch(error => {
-        //                         if (error.message.includes('recent')) {
-        //                             alert('A recent sign in is required to complete the deletion of your account.\nPlease sign out of the app, sign back in and try again.')
-        //                         }
-        //                     })
-        //             })
-        //     })
-
-
+ 
     }
 
 
@@ -442,7 +429,7 @@ export const ProfileScreen = ({ navigation }: any) => {
                     <UserInfoLine labelText={ProfileScreenStrings.lastJournalEntry} text={lastJournalEntry && keyDateToStringDate(lastJournalEntry)} />
                 </View>
                 {/** This will be available in the production version only */}
-                {/* <Pressable style={{ flexDirection: 'row', alignItems: 'center', width: '100%', marginBottom: 7, marginTop: 10 }}
+                <Pressable style={{ flexDirection: 'row', alignItems: 'center', width: '100%', marginBottom: 7, marginTop: 10 }}
                     onPress={() => Alert.alert(
                         'Delete account',
                         ProfileScreenStrings.deleteAccountWarning,
@@ -461,7 +448,7 @@ export const ProfileScreen = ({ navigation }: any) => {
                 >
                     <Text style={[styles.labels, { color: Colors.fontColor, marginRight: 8 }]}>{ProfileScreenStrings.deleteAccount}</Text>
                     <AntDesign name="deleteuser" size={PencilIconSize * 0.8} color={Colors.warning} />
-                </Pressable> */}
+                </Pressable>
 
 
 
