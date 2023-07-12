@@ -98,7 +98,7 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
 
 
     useEffect(() => {
-        // store.dispatch(setLoginReady())
+        
         database().ref(USERS_REF + '/' + currentUser.id).on('value', snapshot => store.dispatch(updateUser(snapshot)))
         /**
          * In case the user changes the display name or profile photo, this listener will update the Welcome screen
@@ -114,7 +114,11 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
         return unsubscribe;
     }, [])
 
-    let firstName = userName.includes(' ') ? userName.split(' ')[0] : userName
+    let firstName = '';
+    if(userName != null && userName.includes(' ')){
+        firstName = userName.split(' ')[0];
+    }
+    
     if (!imageObj) return null;
     return (
         <SafeAreaView style={styles.container}>
