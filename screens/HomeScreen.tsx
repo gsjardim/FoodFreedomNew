@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import React from 'react'
 import { Image, View, Text, TouchableOpacity, StyleSheet, FlatList, SafeAreaView, Alert } from "react-native";
-import { DAILY_NOTIFICATION_ID,  EVENING_NOTIFICATION_ID,  getStorageData, LAST_NEW_VIDEO, MORNING_NOTIFICATION_ID, storeString } from "../dao/internalStorage";
+import { DAILY_NOTIFICATION_ID, EVENING_NOTIFICATION_ID, getStorageData, LAST_NEW_VIDEO, MORNING_NOTIFICATION_ID, storeString } from "../dao/internalStorage";
 import store from "../redux.store/configureStore";
 import { Colors } from '../resources/colors';
 import { compareDates, dateToKeyDate, getFormattedDate, keyDateToDate } from "../resources/common";
 import { Activities, DEFAULT_DAILY_REMINDER, DEFAULT_EVENING_WATER_REMINDER, DEFAULT_MORNING_WATER_REMINDER, FontFamilies, } from "../resources/constants";
 import { exerciseJournal, foodMoodJournal, sleepJournal, waterJournal } from "../resources/imageObj";
 import PhoneDimensions from "../resources/layout";
-import { AlertDialogStrings, HomeScreenStrings} from "../resources/strings";
+import { AlertDialogStrings, HomeScreenStrings } from "../resources/strings";
 import { scheduleDailyReminder } from "../resources/notificationHelper";
 import report from "../components/CrashReport";
 
@@ -72,17 +73,25 @@ export const HomeScreen = ({ navigation }: any) => {
 
     }
 
-    let dates: Array<any> = [];
-    let ind = 30;
-    while (ind >= 0) {
-        let dateObj = new Date()
-        dateObj.setDate(dateObj.getDate() - ind--)
-        dates.push({ index: ind.toString(), date: dateObj });
+
+    const getDatesArray = () => {
+        let dates: Array<any> = [];
+        let ind = 30;
+        while (ind >= 0) {
+            let dateObj = new Date()
+            dateObj.setDate(dateObj.getDate() - ind--)
+            dates.push({ index: ind.toString(), date: dateObj });
+           
+        }
+        return dates;
     }
 
+    useFocusEffect(  React.useCallback(() =>  setDates(getDatesArray()), []))
+
+    const [dates, setDates] = useState<Array<any>>(getDatesArray())
     const [selectedDate, setSelectedDate] = useState(new Date())
     const [userName, setUserName] = useState(store.getState().users.currentUser != null ? store.getState().users.currentUser.name : "")
-    let displayName;
+    let displayName: any;
     if (userName.includes(" ")) displayName = userName.split(" ")[0];
     else displayName = userName;
 

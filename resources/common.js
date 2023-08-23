@@ -1,4 +1,5 @@
-import { Linking } from "react-native";
+import * as Linking  from "expo-linking";
+// import { Linking } from "react-native";
 import report from "../components/CrashReport";
 
 
@@ -14,7 +15,7 @@ const openUrlInBrowser = (url) => {
 }
 
 
-const SendEmail = (email) => Linking.openURL(`mailto:${email}?subject=Food Freedom inquiry`)
+const SendEmail = (email) => Linking.openURL(`mailto:${email}`)
 
 //returns format yyyy-mm-dd
 const getStandardFormatDate = (date) => {

@@ -1,8 +1,8 @@
 import React from 'react'
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Colors } from '../resources/colors';
-import { Video, ResizeMode } from 'expo-av';
-import { useRef} from "react";
+import { Video, Audio, ResizeMode } from 'expo-av';
+import { useRef, useState, useEffect} from "react";
 import PhoneDimensions from "../resources/layout";
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { GeneralTextStyle } from "../resources/constants";
@@ -13,6 +13,11 @@ export const VideoScreen = ({ route, navigation }: any) => {
     let url = route.params.videoUrl;
     let description = route.params.videoDesc;
     const video = useRef<Video>(null);
+    const [status, setStatus] = useState<any>({});
+
+    useEffect(() => {
+        if (status.isPlaying) triggerAudio(video);
+      }, [video, status.isPlaying]);
 
     return (
         <View style={styles.container}>
@@ -34,7 +39,7 @@ export const VideoScreen = ({ route, navigation }: any) => {
                 shouldPlay={true}
                 useNativeControls={true}
                 resizeMode={ResizeMode.CONTAIN}
-                // onPlaybackStatusUpdate={updatePlaybackCallback}
+                onPlaybackStatusUpdate={status => setStatus(status)}
                 onError={(error) => report.log(error)}
                 volume={0.9}
                 isMuted={false}
@@ -45,7 +50,10 @@ export const VideoScreen = ({ route, navigation }: any) => {
     )
 }
 
-
+const triggerAudio = async (ref) => {
+    await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
+    ref.current.playAsync();
+  };
 
 const styles = StyleSheet.create({
     container: {
