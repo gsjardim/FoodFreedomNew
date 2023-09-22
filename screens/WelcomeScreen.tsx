@@ -114,7 +114,7 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
         return unsubscribe;
     }, [])
 
-    let firstName = '';
+    let firstName = userName;
     if(userName != null && userName.includes(' ')){
         firstName = userName.split(' ')[0];
     }

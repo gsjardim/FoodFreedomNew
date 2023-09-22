@@ -8,6 +8,7 @@ import PhoneDimensions from "../resources/layout";
 import { MyVideo } from "../models/VideoModel";
 import store from "../redux.store/configureStore";
 import { compareDates, keyDateToDate, keyDateToStringDate} from "../resources/common";
+import { Platform } from 'react-native';
 
 
 const ThumbnailWidth = PhoneDimensions.window.width * 0.3;
@@ -15,19 +16,25 @@ const { elevation, shadowOpacity, shadowColor, shadowOffset } = DefaultShadow;
 
 export const ResourcesScreen = ({ navigation }: any) => {
 
-    const [videosArray, setVideosArray] = useState<MyVideo[]>(store.getState().general.videosArray)
+    const filterByPlatform = (videos: MyVideo[]) => {
+        return videos.filter(video => {
+            return (Platform.OS === 'ios' && !video.description.includes('Android')) || (Platform.OS === 'android' && !video.description.includes('Apple users'))
+        })
+    
+    }
+
+    const [videosArray, setVideosArray] = useState<MyVideo[]>(filterByPlatform(store.getState().general.videosArray))
 
     useEffect(() => {
 
         const unsubscribe = store.subscribe(() => {
-            let videos = store.getState().general.videosArray
+            let videos = filterByPlatform(store.getState().general.videosArray)
             setVideosArray(videos);
         })
         return unsubscribe;
     }, [])
 
-
-
+    
     return (
         <View style={styles.container}>
            <FlatList
