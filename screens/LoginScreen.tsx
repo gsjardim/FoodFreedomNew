@@ -153,7 +153,11 @@ export const LoginScreen = ({ navigation }: any) => {
 
         // Check if your device supports Google Play
         setIsDataLoading(true);
-        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+        let hasPlay = await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+        if(!hasPlay){
+            showToast('Google sign in not supported on this device')
+            return;
+        }
         // Get the users ID token
         GoogleSignin.signIn().
             then(res => {
@@ -161,10 +165,14 @@ export const LoginScreen = ({ navigation }: any) => {
                 let credential = auth.GoogleAuthProvider.credential(token);
                 signInWithOAuthCredential(credential, () => {
                     navigation.navigate('Welcome')
-                    setIsDataLoading(false);
+                    
                 }, showToast)
             })
-            .catch(err => report.recordError(err));
+            .catch(err => {
+                report.recordError(err)
+                alert('Google sign in failed:\n' + err.message)
+            })
+            .finally(() => setIsDataLoading(false));
     }
 
     const testCreateAccount = () => {
