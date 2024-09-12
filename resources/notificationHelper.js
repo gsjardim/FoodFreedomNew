@@ -6,6 +6,8 @@ import { Platform } from "react-native";
 import report from "../components/CrashReport";
 import auth from '@react-native-firebase/auth'
 import store from "../redux.store/configureStore";
+import Constants from 'expo-constants';
+//import * as Device from 'expo-device';
 
 const registerForNotifications = async () => {
 
@@ -18,7 +20,13 @@ const registerForNotifications = async () => {
                 return;
             }
         }
-        const token = (await Notifications.getExpoPushTokenAsync({ experienceId: '@gsjardim83/foodFreedomApp' })).data;
+        const projectId = Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
+        if(!projectId){
+            report.recordError('Cannot find project id while registering for push notifications');
+            return;
+        }
+
+        const token = (await Notifications.getExpoPushTokenAsync({ projectId: projectId })).data;
         report.log(`Saving push token ${token} for user ${auth().currentUser?.uid} - ${auth().currentUser?.displayName}`);
         storeString(PUSH_TOKEN, token)
         saveUserPushtoken(token);
@@ -36,7 +44,14 @@ const requestNotificationsPermissionsAndSavePushToken = async () => {
         deleteStorageData(PUSH_TOKEN)
         return false;
     }
-    const token = (await Notifications.getExpoPushTokenAsync({ experienceId: '@gsjardim83/foodFreedomApp' })).data;
+
+    const projectId = Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
+    if(!projectId){
+        report.recordError('Cannot find project id while requesting permission for push notifications');
+        return;
+    }
+
+    const token = (await Notifications.getExpoPushTokenAsync({ projectId: projectId })).data;
     storeString(PUSH_TOKEN, token)
     saveUserPushtoken(token);
     return true;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, ImageBackground, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -29,6 +29,8 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
     const [imageObj, setImageObj] = useState<any>(null)
     const [quoteContent, setQuoteContent] = useState('')
 
+    const responseListener = useRef<Notifications.Subscription>();
+
     useEffect(() => {
         /**
          * This useEffect deals with requesting permissions to send notifications to the user.
@@ -46,7 +48,7 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
         }
 
 
-        const responseListener = Notifications.addNotificationResponseReceivedListener(data => {
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(data => {
             const isMealReminderNotification = (newNotification: MyNotification) => {
                 return newNotification.title == NotificationsStrings.mealReminderTitle && newNotification.content == NotificationsStrings.mealReminder
             }
@@ -63,7 +65,7 @@ export const WelcomeScreen = ({ route, navigation }: any) => {
         });
 
         return () => {
-            Notifications.removeNotificationSubscription(responseListener);
+            Notifications.removeNotificationSubscription(responseListener.current);
         };
 
     }, []);

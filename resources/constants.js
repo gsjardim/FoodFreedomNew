@@ -16,7 +16,7 @@ export const FontFamilies = {
 
 //Minimum age to register as a user
 export const MINIMUM_AGE = 16;
-export const validationRegex = '^(?=.*[0-9])(?=.*[!@#$%^&*_\-+.])[a-zA-Z0-9!@#$%^&*_\-+.]{7,15}$';
+export const validationRegex = /^(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,15}$/;
 export const emailValidationRegex = "/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/";
 
 export const ToastDuration = 2000;
@@ -87,3 +87,148 @@ export const Activities = {
     diary: 'Diary',
     diaryInput: 'DiaryInputScreen',
 }
+
+//This string array is a temporary substitute for the Feelings wheel feature. In July 2024, after upgrading the Expo SDK version as required by
+//Google, the Feelings wheel library broke (Victory Native). Unable to find a satisfactory alternative compatible wiith Expo, this was implemented to
+//feed the dropdown until a solution is found and implemented.
+export const EmotionsArray = [
+    //Angry
+    "Angry",
+    "Let Down",
+    "Humiliated",
+    "Bitter",
+    "Mad",
+    "Aggressive",
+    "Frustrated",
+    "Distant",
+    "Critical",
+    "Betrayed",
+    "Resentful",
+    "Disrespected",
+    "Ridiculed",
+    "Indignant",
+    "Violated",
+    "Furious",
+    "Jealous",
+    "Provoked",
+    "Hostile",
+    "Infuriated",
+    "Annoyed",
+    "Withdrawn",
+    "Numb",
+    "Skeptical",
+    "Dismissive",
+
+    //Fearful
+    "Fearful",
+    "Scared",
+    "Anxious",
+    "Insecure",
+    "Weak",
+    "Rejected",
+    "Threatened",
+    "Helpless",
+    "Frightened",
+    "Overwhelmed",
+    "Worried",
+    "Inadequate",
+    "Inferior",
+    "Worthless",
+    "Insignificant",
+    "Excluded",
+    "Persecuted",
+    "Nervous",
+    "Exposed",
+
+    //Bad
+    "Bad",
+    "Tired",
+    "Stressed",
+    "Busy",
+    "Bored",
+    "Unfocussed",
+    "Sleepy",
+    "Out of control",
+    "Rushed",
+    "Pressured",
+    "Apathetic",
+    "Indifferent",
+
+    //Surprised
+    "Surprised",
+    "Excited",
+    "Amazed",
+    "Confused",
+    "Startled",
+    "Energetic",
+    "Eager",
+    "Awe",
+    "Astonished",
+    "Perplexed",
+    "Disillusioned",
+    "Dismayed",
+    "Shocked",
+
+    //Happy
+    "Happy",
+    "Optimistic",
+    "Trusting",
+    "Peaceful",
+    "Powerful",
+    "Accepted",
+    "Proud",
+    "Interested",
+    "Content",
+    "Playful",
+    "Inspired",
+    "Hopeful",
+    "Intimate",
+    "Sensitive",
+    "Thankful",
+    "Loving",
+    "Creative",
+    "Courageous",
+    "Valued",
+    "Respected",
+    "Confident",
+    "Successful",
+    "Inquisitive",
+    "Curious",
+    "Joyful",
+    "Free",
+    "Cheeky",
+    "Aroused",
+
+    //Sad
+    "Sad",
+    "Hurt",
+    "Depressed",
+    "Guilty",
+    "Despair",
+    "Vulnerable",
+    "Lonely",
+    "Embarrassed",
+    "Disapointed",
+    "Empty",
+    "Remorseful",
+    "Ashamed",
+    "Powerless",
+    "Grief",
+    "Fragile",
+    "Victimised",
+    "Abandoned",
+    "Isolated",
+
+    //Disgusted
+    "Disgusted",
+    "Disapproving",
+    "Awful",
+    "Repelled",
+    "Judgemental",
+    "Appalled",
+    "Revolted",
+    "Nauseated",
+    "Detestable",
+    "Horrified",
+    "Hesitant"
+];

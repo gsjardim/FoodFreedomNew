@@ -3,7 +3,7 @@ import React from 'react';
 import { useEffect, useState } from "react";
 import { CustomButton } from "../components/CustomButton";
 import { Colors } from "../resources/colors";
-import { DefaultPadding, FontFamilies, FontSizes, StatusBarHeight, DefaultShadow, ToastDuration, MEAL_REMINDER_THRESHOLD, DEFAULT_TIMER } from "../resources/constants";
+import { DefaultPadding, FontFamilies, FontSizes, StatusBarHeight, DefaultShadow, ToastDuration, MEAL_REMINDER_THRESHOLD, DEFAULT_TIMER, EmotionsArray } from "../resources/constants";
 import PhoneDimensions from "../resources/layout";
 import { ActivitiesStrings, NotificationsStrings } from "../resources/strings";
 import { FlatList, ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-handler";
@@ -18,7 +18,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
 import { FoodMoodJournal } from "../models/JournalEntryModel";
 import { PHYSICAL_BEFORE, PHYSICAL_AFTER, MENTAL_BEFORE, MENTAL_AFTER, EMONTIONAL_BEFORE, EMOTIONAL_AFTER, neutralMenuOption } from "../resources/constants";
-import FeelingsWheel from "../components/FeelingsWheel";
+//import FeelingsWheel from "../components/FeelingsWheel";
 import FaceSelector from "../components/FaceSelector";
 import store from "../redux.store/configureStore";
 import { JournalEntry } from "../models/JournalEntryModel";
@@ -764,12 +764,12 @@ export const FMJournalForm = (props: any) => {
                 onSelect={handleOnSelectFeeling}
             />
 
-            <FeelingsWheel
+            {/* <FeelingsWheel
                 showModal={showWheel}
                 onSelect={handleOnSelectFeeling}
                 onCancel={() => { setShowWheel(false) }}
 
-            />
+            /> */}
 
             <View style={formStyle.timeView}>
                 <TouchableOpacity onPress={() => setIsPickerShow(!isPickerShow)} style={{ flexDirection: 'row' }}>
@@ -809,7 +809,8 @@ export const FMJournalForm = (props: any) => {
                 <View style={formStyle.feelingSelectorsView}>
                     <FeelingSelectorBox label={pb === neutralMenuOption ? ActivitiesStrings.fmPhysicallyLabel : pb} onPress={onCallDropdown} data={store.getState().general.physicalFeelingsArray} mode={PHYSICAL_BEFORE} />
                     <FeelingSelectorBox label={mb === neutralMenuOption ? ActivitiesStrings.fmMentallyLabel : mb} onPress={onCallDropdown} data={store.getState().general.mentalFeelingsArray} mode={MENTAL_BEFORE} />
-                    <FeelingSelectorBox label={eb === neutralMenuOption ? ActivitiesStrings.fmEmtionallyLabel : eb} onPress={openWheel} mode={EMONTIONAL_BEFORE} />
+                    <FeelingSelectorBox label={eb === neutralMenuOption ? ActivitiesStrings.fmEmtionallyLabel : eb} onPress={onCallDropdown} data={EmotionsArray} mode={EMONTIONAL_BEFORE} />
+                    {/* This the old button, which opened the feelings wheel <FeelingSelectorBox label={eb === neutralMenuOption ? ActivitiesStrings.fmEmtionallyLabel : eb} onPress={openWheel} mode={EMONTIONAL_BEFORE} /> */}
                 </View>}
 
             <View style={formStyle.foodDescriptionView}>
@@ -871,7 +872,8 @@ export const FMJournalForm = (props: any) => {
                 <View style={formStyle.feelingSelectorsView}>
                     <FeelingSelectorBox label={pa === neutralMenuOption ? ActivitiesStrings.fmPhysicallyLabel : pa} onPress={onCallDropdown} data={store.getState().general.physicalFeelingsArray} mode={PHYSICAL_AFTER} />
                     <FeelingSelectorBox label={ma === neutralMenuOption ? ActivitiesStrings.fmMentallyLabel : ma} onPress={onCallDropdown} data={store.getState().general.mentalFeelingsArray} mode={MENTAL_AFTER} />
-                    <FeelingSelectorBox label={ea === neutralMenuOption ? ActivitiesStrings.fmEmtionallyLabel : ea} onPress={openWheel} mode={EMOTIONAL_AFTER} />
+                    <FeelingSelectorBox label={ea === neutralMenuOption ? ActivitiesStrings.fmEmtionallyLabel : ea} onPress={onCallDropdown} data={EmotionsArray} mode={EMOTIONAL_AFTER} />
+                    {/* <FeelingSelectorBox label={ea === neutralMenuOption ? ActivitiesStrings.fmEmtionallyLabel : ea} onPress={openWheel} mode={EMOTIONAL_AFTER} /> */}
                 </View>
 
                 <View style={formStyle.mealRateView}>

@@ -73,7 +73,7 @@ export const RegisterScreen = ({ navigation }: any) => {
         }
 
         
-        if (!password1.match(validationRegex)) {
+        if (!validationRegex.test(password1)) {
             alert(LoginRegisterScreenStrings.wrongPasswordFormat);
             return;
         }

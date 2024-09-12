@@ -2,7 +2,7 @@
   "expo": {
     "name": "Food Freedom App",
     "slug": "foodfreedomRN",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "light",
@@ -15,13 +15,15 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber":"1.0.7",
+      "buildNumber": "1.0.8",
       "icon": "./assets/images/icon.png",
       "supportsTablet": false,
       "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.gsjardim83.foodfreedomRN",
-      "infoPlist":{
-        "UIBackgroundModes":["remote-notification"]
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "remote-notification"
+        ]
       }
     },
     "android": {
@@ -31,7 +33,7 @@
       },
       "googleServicesFile": "./google-services.json",
       "package": "com.gsjardim83.foodfreedomRN",
-      "versionCode": 8,
+      "versionCode": 9,
       "permissions": [
         "RECORD_AUDIO"
       ]
@@ -74,8 +76,8 @@
           "androidCollapsedTitle": "Food freedom app",
           "iosDisplayInForeground": true
         }
-      ]
+      ],
+      "expo-font"
     ]
-  
   }
 }
